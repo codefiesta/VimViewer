@@ -1,0 +1,42 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: Swift
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    env:
+      XCODE_VERSION: 'Xcode_16.0'
+
+    runs-on: macos-15
+
+    steps:
+#    - name: Checkout VimKit
+#      uses: actions/checkout@v3
+#      with:
+#        repository: codefiesta/VimKit
+#        ref: main
+#        token: ${{ secrets.VIMKIT_CHECKOUT_TOKEN }}
+#        path: VimKit
+    - name: Checkout VimViewer
+      uses: actions/checkout@v3
+      with:
+        path: VimViewer
+    - name: Install SwiftLint
+      run: brew install swiftlint
+    - name: Select Xcode
+      run: sudo xcode-select -s "/Applications/$XCODE_VERSION.app"
+    - name: Lint
+      run: swiftlint lint --strict
+      working-directory: ./VimViewer
+    - name: Build
+      run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=iOS Simulator"
+      working-directory: ./VimViewer
