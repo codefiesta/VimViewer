@@ -25,7 +25,6 @@ jobs:
     - name: Install SwiftLint
       run: brew install swiftlint
     - name: Lint
-      run: swiftlint lint --strict
-      working-directory: ./VimViewer
+      run: swiftlint lint --config .swiftlint.yml
     - name: Build
       run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=iOS Simulator"
