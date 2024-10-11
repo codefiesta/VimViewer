@@ -1,13 +1,15 @@
 //
-//  ContentView.swift
+//  VimContentView.swift
 //  VimViewer
 //
-//  Created by Kevin McKee on 10/11/24.
+//  Created by Kevin McKee
 //
 
 import SwiftUI
 
-struct ContentView: View {
+// The main content view
+struct VimContentView: View {
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +22,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    VimContentView()
 }

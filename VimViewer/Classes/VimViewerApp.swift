@@ -2,16 +2,17 @@
 //  VimViewerApp.swift
 //  VimViewer
 //
-//  Created by Kevin McKee on 10/11/24.
+//  Created by Kevin McKee
 //
 
 import SwiftUI
 
 @main
 struct VimViewerApp: App {
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            VimContentView()
         }
     }
 }
