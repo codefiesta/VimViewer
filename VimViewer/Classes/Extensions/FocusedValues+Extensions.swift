@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct FocusedModelKey: FocusedValueKey {
-    typealias Value = VimDataModel
+    typealias Value = VimModel
 }
 
 struct FocusedModelBinding: FocusedValueKey {
-    typealias Value = Binding<VimDataModel>
+    typealias Value = Binding<VimModel>
 }
 
 extension FocusedValues {

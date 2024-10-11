@@ -1,5 +1,5 @@
 //
-//  VimDataModel.swift
+//  VimModel.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class VimDataModel {
+class VimModel {
 
     var name: String
     @Attribute(.unique)

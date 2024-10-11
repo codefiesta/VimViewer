@@ -1,5 +1,5 @@
 //
-//  VimListView.swift
+//  VimModelListView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -10,16 +10,16 @@ import SwiftUI
 
 struct VimListView: View {
 
-    @Query(sort: \VimDataModel.name)
-    var models: [VimDataModel]
+    @Query(sort: \VimModel.name)
+    var models: [VimModel]
 
     @FocusedValue(\.focusedModel)
-    var focusedModel: VimDataModel?
+    var model: VimModel?
 
     var body: some View {
 
         @FocusedBinding(\.focusedModelBinding)
-        var model: VimDataModel?
+        var model: VimModel?
 
         NavigationSplitView {
 
@@ -31,14 +31,14 @@ struct VimListView: View {
                                 .navigationTitle(model.name)
                         }
                     } label: {
-                        Text(model.name)
+                        VimModelRow(model: model)
                     }
                 }
             }
         } detail: {
             Text("Select a Model")
         }
-        .focusedValue(focusedModel)
+        .focusedValue(model)
     }
 }
 
