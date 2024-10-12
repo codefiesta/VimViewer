@@ -8,15 +8,15 @@
 import SwiftUI
 
 // The main content view
-struct VimContentView: View {
+struct VimContent: View {
 
     var body: some View {
-        VimListView()
+        VimModelList()
             .padding()
 
     }
 }
 
 #Preview {
-    VimContentView()
+    VimContent()
 }

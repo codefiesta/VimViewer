@@ -22,11 +22,11 @@ struct VimModelRow: View {
                     .bold()
             }
             Spacer()
-        }.padding()
+        }
+        .padding()
     }
 }
 
 #Preview {
-    let model = VimModelContainer.mocks.first!
-    VimModelRow(model: model)
+    VimModelRow(model: VimModelContainer.mocks.first!)
 }

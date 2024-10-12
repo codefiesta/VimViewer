@@ -9,12 +9,12 @@ import SwiftData
 import SwiftUI
 import VimKit
 
-struct VimListView: View {
+struct VimModelList: View {
 
     @Query(sort: \VimModel.name)
     var models: [VimModel]
 
-    @FocusedBinding(\.focusedModelBinding)
+    @State
     var model: VimModel?
 
     var body: some View {
@@ -22,26 +22,34 @@ struct VimListView: View {
             List(models, selection: $model) { model in
                 navigationLink(for: model)
             }
+            .navigationDestination(item: $model) { model in
+                VimModelDetail(model: model)
+            }
         } detail: {
             Text("Select a Model")
         }
-        .focusedValue(model)
+
+        .onChange(of: model) { _, _ in
+            handleModelChange()
+        }
     }
 
     /// Builds a navigation link for the specified model
     /// - Parameter model: the model to build a link for
     /// - Returns: a NavigationLink
     private func navigationLink(for model: VimModel) -> some View {
-        NavigationLink {
-            Text(model.name)
-                .navigationTitle(model.name)
-        } label: {
+        NavigationLink(value: model) {
             VimModelRow(model: model)
         }
+    }
+
+    private func handleModelChange() {
+        guard let model else { return }
+        debugPrint("🚀", model.name)
     }
 }
 
 #Preview {
-    VimListView()
+    VimModelList()
         .modelContainer(VimModelContainer.shared.modelContainer)
 }
