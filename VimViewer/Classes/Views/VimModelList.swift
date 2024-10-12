@@ -1,5 +1,5 @@
 //
-//  VimModelListView.swift
+//  VimModelList.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
