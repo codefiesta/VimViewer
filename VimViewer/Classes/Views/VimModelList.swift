@@ -28,7 +28,6 @@ struct VimModelList: View {
         } detail: {
             Text("Select a Model")
         }
-
         .onChange(of: model) { _, _ in
             handleModelChange()
         }

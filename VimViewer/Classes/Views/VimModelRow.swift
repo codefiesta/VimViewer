@@ -21,7 +21,6 @@ struct VimModelRow: View {
                 Text(model.name)
                     .bold()
             }
-            Spacer()
         }
         .padding()
     }
