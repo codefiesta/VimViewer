@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CE473B5D2CBA0E360045EEFB /* VimKit in Frameworks */ = {isa = PBXBuildFile; productRef = CE473B5C2CBA0E360045EEFB /* VimKit */; };
+		CE473B5F2CBA0E360045EEFB /* VimKitCompositor in Frameworks */ = {isa = PBXBuildFile; productRef = CE473B5E2CBA0E360045EEFB /* VimKitCompositor */; };
+		CE473B612CBA0E360045EEFB /* VimKitShaders in Frameworks */ = {isa = PBXBuildFile; productRef = CE473B602CBA0E360045EEFB /* VimKitShaders */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		CE2A98C22CB97A9600502C69 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +58,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE473B5D2CBA0E360045EEFB /* VimKit in Frameworks */,
+				CE473B612CBA0E360045EEFB /* VimKitShaders in Frameworks */,
+				CE473B5F2CBA0E360045EEFB /* VimKitCompositor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +87,7 @@
 				CE2A98B22CB97A9500502C69 /* VimViewer */,
 				CE2A98C42CB97A9600502C69 /* VimViewerTests */,
 				CE2A98CE2CB97A9600502C69 /* VimViewerUITests */,
+				CE473B5B2CBA0E360045EEFB /* Frameworks */,
 				CE2A98B12CB97A9500502C69 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +100,13 @@
 				CE2A98CB2CB97A9600502C69 /* VimViewerUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CE473B5B2CBA0E360045EEFB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +129,9 @@
 			);
 			name = VimViewer;
 			packageProductDependencies = (
+				CE473B5C2CBA0E360045EEFB /* VimKit */,
+				CE473B5E2CBA0E360045EEFB /* VimKitCompositor */,
+				CE473B602CBA0E360045EEFB /* VimKitShaders */,
 			);
 			productName = VimViewer;
 			productReference = CE2A98B02CB97A9500502C69 /* VimViewer.app */;
@@ -195,6 +215,9 @@
 			);
 			mainGroup = CE2A98A72CB97A9500502C69;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CE473B5A2CBA0DCF0045EEFB /* XCRemoteSwiftPackageReference "VimKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CE2A98B12CB97A9500502C69 /* Products */;
 			projectDirPath = "";
@@ -583,6 +606,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CE473B5A2CBA0DCF0045EEFB /* XCRemoteSwiftPackageReference "VimKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/codefiesta/VimKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CE473B5C2CBA0E360045EEFB /* VimKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE473B5A2CBA0DCF0045EEFB /* XCRemoteSwiftPackageReference "VimKit" */;
+			productName = VimKit;
+		};
+		CE473B5E2CBA0E360045EEFB /* VimKitCompositor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE473B5A2CBA0DCF0045EEFB /* XCRemoteSwiftPackageReference "VimKit" */;
+			productName = VimKitCompositor;
+		};
+		CE473B602CBA0E360045EEFB /* VimKitShaders */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE473B5A2CBA0DCF0045EEFB /* XCRemoteSwiftPackageReference "VimKit" */;
+			productName = VimKitShaders;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CE2A98A82CB97A9500502C69 /* Project object */;
 }
