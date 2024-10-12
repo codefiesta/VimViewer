@@ -14,36 +14,34 @@ struct VimListView: View {
     @Query(sort: \VimModel.name)
     var models: [VimModel]
 
-    @FocusedValue(\.focusedModel)
+    @FocusedBinding(\.focusedModelBinding)
     var model: VimModel?
 
     var body: some View {
-
-        @FocusedBinding(\.focusedModelBinding)
-        var model: VimModel?
-
         NavigationSplitView {
-
-            List(selection: $model) {
-                ForEach(models, id: \.self) { model in
-                    NavigationLink {
-                        VStack {
-                            VimContainerView(vim: .init(model.url))
-                            Text(model.name)
-                                .navigationTitle(model.name)
-                        }
-                    } label: {
-                        VimModelRow(model: model)
-                    }
-                }
+            List(models, selection: $model) { model in
+                navigationLink(for: model)
             }
         } detail: {
             Text("Select a Model")
         }
         .focusedValue(model)
     }
+
+    /// Builds a navigation link for the specified model
+    /// - Parameter model: the model to build a link for
+    /// - Returns: a NavigationLink
+    private func navigationLink(for model: VimModel) -> some View {
+        NavigationLink {
+            Text(model.name)
+                .navigationTitle(model.name)
+        } label: {
+            VimModelRow(model: model)
+        }
+    }
 }
 
 #Preview {
-    VimListView().modelContainer(VimModelContainer.shared.modelContainer)
+    VimListView()
+        .modelContainer(VimModelContainer.shared.modelContainer)
 }

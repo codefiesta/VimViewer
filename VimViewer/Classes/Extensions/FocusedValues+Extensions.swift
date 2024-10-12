@@ -25,12 +25,12 @@ struct FocusedVimBindingKey: FocusedValueKey {
 }
 
 extension FocusedValues {
-    
+
     var focusedModel: FocusedModelKey.Value? {
         get { self[FocusedModelKey.self] }
         set { self[FocusedModelKey.self] = newValue }
     }
-    
+
     var focusedModelBinding: FocusedModelBindingKey.Value? {
         get { self[FocusedModelBindingKey.self] }
         set { self[FocusedModelBindingKey.self] = newValue }
@@ -40,7 +40,7 @@ extension FocusedValues {
         get { self[FocusedVimKey.self] }
         set { self[FocusedVimKey.self] = newValue }
     }
-    
+
     var focusedVimBinding: FocusedVimBindingKey.Value? {
         get { self[FocusedVimBindingKey.self] }
         set { self[FocusedVimBindingKey.self] = newValue }
