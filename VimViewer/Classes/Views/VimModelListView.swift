@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import VimKit
 
 struct VimListView: View {
 
@@ -27,6 +28,7 @@ struct VimListView: View {
                 ForEach(models, id: \.self) { model in
                     NavigationLink {
                         VStack {
+                            VimContainerView(vim: .init(model.url))
                             Text(model.name)
                                 .navigationTitle(model.name)
                         }

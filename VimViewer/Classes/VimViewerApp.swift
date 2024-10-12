@@ -16,7 +16,6 @@ struct VimViewerApp: App {
     var body: some Scene {
         WindowGroup {
             VimContentView()
-                // .environment(modelData)
         }.modelContainer(modelContainer)
     }
 }
