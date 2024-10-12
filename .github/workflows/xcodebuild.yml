@@ -31,9 +31,9 @@ jobs:
       run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=iOS"
     # The macOS build (if the PR has the label of 'os:macOS' applied)
     - name: Build macOS
-      if: ${{ contains(github.event.pull_request.labels.*.name, 'os%3A%20macOS') }}
+      if: ${{ contains(github.event.pull_request.labels.*.name, 'macOS') }}
       run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=macOS"
     # The visionOS build (if the PR has the label of 'os:visionOS' applied)
     - name: Build visionOS
-      if: ${{ contains(github.event.pull_request.labels.*.name, 'os%3A%20visionOS') }}
+      if: ${{ contains(github.event.pull_request.labels.*.name, 'visionOS') }}
       run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=visionOS"
