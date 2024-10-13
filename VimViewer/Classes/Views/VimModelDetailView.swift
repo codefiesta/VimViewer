@@ -17,18 +17,12 @@ struct VimModelDetailView: View {
     var body: some View {
 
         VStack {
-            Text(model.name)
-                .bold()
-
-            Text("\(vim.state)")
-                .bold()
-
             switch vim.state {
             case .loading, .downloading:
                 ProgressView()
                     .controlSize(.large)
             case .ready:
-                preview
+                readyView
             case .error, .unknown, .downloaded:
                 EmptyView()
             }
@@ -41,11 +35,47 @@ struct VimModelDetailView: View {
         .navigationTitle(model.name)
     }
 
-    var preview: some View {
+    var readyView: some View {
+
         VStack {
-            if vim.state == .ready {
-                VimHeaderView()
+
+            HStack {
+
+                Image(file: model.previewImageName)?
+                    .resizable()
+                    .frame(maxWidth: 100, maxHeight: 100)
+                    .clipShape(Circle())
+                    .overlay {
+                        Circle().stroke(.blue, lineWidth: 4)
+                    }
+                    .padding([.leading, .trailing])
+
+
+                Text(model.name)
+                    .font(.title)
+
+                Spacer()
+
+                Button {
+                    launchViewer()
+                } label: {
+                    Image(systemName: "cube")
+                }
+                .controlSize(.extraLarge)
             }
+
+
+            Divider()
+
+            VimHeaderView()
+
+        }.padding()
+    }
+
+    private func launchViewer() {
+        debugPrint("🚀")
+        Task {
+            await vim.geometry?.load()
         }
     }
 }
