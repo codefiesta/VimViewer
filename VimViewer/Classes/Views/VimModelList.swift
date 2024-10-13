@@ -43,14 +43,11 @@ struct VimModelList: View {
         guard let model else { return }
         Task {
             await vim.load(from: model.url)
-        }
 
-//        vim.url = model.url
-//        debugPrint("🚀 \(vim.url)")
-        //vim = .init(model.url)
-//        Task {
-//            await vim.download()
-//        }
+            if model.previewImageName == nil {
+                model.previewImageName = vim.assets?.previewImageName
+            }
+        }
     }
 }
 

@@ -22,6 +22,10 @@ class VimModel {
     @Attribute(.unique)
     var url: URL
 
+    /// The model preview image name.
+    /// Once the model has been downloaded, we extract this from the assets buffer and save it to disk.
+    var previewImageName: String?
+
     /// Initializer
     /// - Parameters:
     ///   - name: the model name

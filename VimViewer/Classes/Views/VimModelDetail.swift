@@ -22,12 +22,31 @@ struct VimModelDetail: View {
 
             Text("\(vim.state)")
                 .bold()
+
+            switch vim.state {
+            case .loading, .downloading:
+                ProgressView()
+                    .controlSize(.large)
+            case .ready:
+                preview
+            case .error, .unknown, .downloaded:
+                EmptyView()
+            }
+
             Spacer()
             Text(model.url.absoluteString)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
         .navigationTitle(model.name)
+    }
+
+    var preview: some View {
+        VStack {
+            if vim.state == .ready {
+                VimHeaderView()
+            }
+        }
     }
 }
 
