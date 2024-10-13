@@ -9,14 +9,14 @@ import SwiftUI
 import VimKit
 
 // The main content view
-struct VimContent: View {
+struct VimContentView: View {
 
     var body: some View {
-        VimModelList()
+        VimModelListView()
             .padding()
     }
 }
 
 #Preview {
-    VimContent()
+    VimContentView()
 }

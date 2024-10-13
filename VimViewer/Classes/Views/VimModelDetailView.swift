@@ -1,5 +1,5 @@
 //
-//  VimModelDetail.swift
+//  VimModelDetailView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -8,7 +8,7 @@
 import SwiftUI
 import VimKit
 
-struct VimModelDetail: View {
+struct VimModelDetailView: View {
 
     @EnvironmentObject
     var vim: Vim
@@ -53,5 +53,5 @@ struct VimModelDetail: View {
 #Preview {
     let model = VimModelContainer.mocks.first!
     let vim: Vim = .init()
-    VimModelDetail(model: model).environmentObject(vim)
+    VimModelDetailView(model: model).environmentObject(vim)
 }

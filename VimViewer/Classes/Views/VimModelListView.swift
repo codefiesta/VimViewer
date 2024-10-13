@@ -1,5 +1,5 @@
 //
-//  VimModelList.swift
+//  VimModelListView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 import VimKit
 
-struct VimModelList: View {
+struct VimModelListView: View {
 
     @EnvironmentObject
     var vim: Vim
@@ -24,11 +24,11 @@ struct VimModelList: View {
         NavigationSplitView {
             List(models, selection: $model) { model in
                 NavigationLink(value: model) {
-                    VimModelRow(model: model)
+                    VimModelRowView(model: model)
                 }
             }
             .navigationDestination(item: $model) { model in
-                VimModelDetail(model: model)
+                VimModelDetailView(model: model)
             }
         } detail: {
             Text("Select a Model")
@@ -52,6 +52,6 @@ struct VimModelList: View {
 }
 
 #Preview {
-    VimModelList()
+    VimModelListView()
         .modelContainer(VimModelContainer.shared.modelContainer)
 }

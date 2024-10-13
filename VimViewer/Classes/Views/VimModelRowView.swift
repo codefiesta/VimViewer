@@ -8,7 +8,7 @@
 import SwiftUI
 import VimKit
 
-struct VimModelRow: View {
+struct VimModelRowView: View {
 
     @EnvironmentObject
     var vim: Vim
@@ -99,5 +99,5 @@ struct VimModelRow: View {
 }
 
 #Preview {
-    VimModelRow(model: VimModelContainer.mocks.first!)
+    VimModelRowView(model: VimModelContainer.mocks.first!)
 }
