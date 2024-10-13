@@ -7,15 +7,21 @@
 
 import SwiftData
 import SwiftUI
+import VimKit
 
 @main
 struct VimViewerApp: App {
+
+    @Environment(\.vim)
+    var vim: Vim
 
     let modelContainer = VimModelContainer.shared.modelContainer
 
     var body: some Scene {
         WindowGroup {
             VimContent()
-        }.modelContainer(modelContainer)
+        }
+        .environmentObject(vim)
+        .modelContainer(modelContainer)
     }
 }

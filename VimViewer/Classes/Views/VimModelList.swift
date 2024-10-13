@@ -11,6 +11,9 @@ import VimKit
 
 struct VimModelList: View {
 
+    @EnvironmentObject
+    var vim: Vim
+
     @Query(sort: \VimModel.name)
     var models: [VimModel]
 
@@ -20,7 +23,9 @@ struct VimModelList: View {
     var body: some View {
         NavigationSplitView {
             List(models, selection: $model) { model in
-                navigationLink(for: model)
+                NavigationLink(value: model) {
+                    VimModelRow(model: model)
+                }
             }
             .navigationDestination(item: $model) { model in
                 VimModelDetail(model: model)
@@ -33,18 +38,19 @@ struct VimModelList: View {
         }
     }
 
-    /// Builds a navigation link for the specified model
-    /// - Parameter model: the model to build a link for
-    /// - Returns: a NavigationLink
-    private func navigationLink(for model: VimModel) -> some View {
-        NavigationLink(value: model) {
-            VimModelRow(model: model)
-        }
-    }
-
+    /// Handles a model selection change event.
     private func handleModelChange() {
         guard let model else { return }
-        debugPrint("🚀", model.name)
+        Task {
+            await vim.load(from: model.url)
+        }
+
+//        vim.url = model.url
+//        debugPrint("🚀 \(vim.url)")
+        //vim = .init(model.url)
+//        Task {
+//            await vim.download()
+//        }
     }
 }
 

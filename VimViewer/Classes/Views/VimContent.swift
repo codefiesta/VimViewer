@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import VimKit
 
 // The main content view
 struct VimContent: View {
@@ -13,7 +14,6 @@ struct VimContent: View {
     var body: some View {
         VimModelList()
             .padding()
-
     }
 }
 
