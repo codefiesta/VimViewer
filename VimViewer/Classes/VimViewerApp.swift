@@ -24,12 +24,13 @@ struct VimViewerApp: App {
         .environmentObject(vim)
         .modelContainer(modelContainer)
 
+        #if !os(visionOS)
         WindowGroup(id: .renderer) {
             VimRendererContainerView(vim: vim)
         }
         .environmentObject(vim)
         .modelContainer(modelContainer)
-
+        #endif
 
     }
 }
