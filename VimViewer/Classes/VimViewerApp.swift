@@ -18,25 +18,44 @@ struct VimViewerApp: App {
     @Environment(\.vim)
     var vim: Vim
 
+    #if os(visionOS)
+
+    @Environment(\.dataProvider)
+    var dataProvider: ARDataProvider
+
+    #endif
+
     let modelContainer = VimModelContainer.shared.modelContainer
 
     var body: some Scene {
+
         WindowGroup {
-            VimContentView()
+            VimMainContentView()
+            #if os(visionOS)
+            .task {
+                await dataProvider.start()
+            }
+            #endif
         }
         .environmentObject(vim)
         .modelContainer(modelContainer)
 
-        #if !os(visionOS)
+        #if os(visionOS)
+
+        // If we are running visionOS, build the immersive space
+        ImmersiveSpace(id: .renderer) {
+            VimImmersiveSpaceContent(vim: vim, dataProvider: dataProvider)
+        }
+
+        #else
+
+        // If we are running macOS or iOS build the renderer window group
         WindowGroup(id: .renderer) {
             VimRendererContainerView(vim: vim)
         }
         .environmentObject(vim)
         .modelContainer(modelContainer)
-        #else
-        ImmersiveSpace(id: .renderer) {
-            VimImmersiveSpaceContent(vim: vim, configuration: .init(), dataProviderContext: .init())
-        }
+
         #endif
 
     }

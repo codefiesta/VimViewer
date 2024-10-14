@@ -25,10 +25,11 @@ struct VimModelDetailView: View {
 
     @Environment(\.dismissImmersiveSpace)
     var dismissImmersiveSpace
+
     #endif
 
     @State
-    var isPresented: Bool = false
+    var presentRenderer: Bool = false
 
     var model: VimModel
 
@@ -52,8 +53,18 @@ struct VimModelDetailView: View {
         }
         .navigationTitle(model.name)
         #if os(iOS)
-        .fullScreenCover(isPresented: $isPresented) {
+        .fullScreenCover(isPresented: $presentRenderer) {
             VimRendererContainerView(vim: vim)
+        }
+        #elseif os(visionOS)
+        .onChange(of: presentRenderer) { _, newValue in
+            Task { @MainActor in
+                if newValue {
+                    await openImmersiveSpace(id: .renderer)
+                } else {
+                    await dismissImmersiveSpace()
+                }
+            }
         }
         #endif
     }
@@ -99,13 +110,11 @@ struct VimModelDetailView: View {
         Task {
             await vim.geometry?.load()
         }
-        #if os(iOS)
-        isPresented.toggle()
-        #elseif os(macOS)
+        #if os(macOS)
         openWindow(id: .renderer)
-        #elseif os(visionOS)
+        #else
+        presentRenderer.toggle()
         #endif
-
     }
 }
 

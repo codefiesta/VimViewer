@@ -5,6 +5,7 @@
 //  Created by Kevin McKee on 10/14/24.
 //
 
+#if os(visionOS)
 import SwiftUI
 import VimKit
 
@@ -25,3 +26,18 @@ extension ImmersiveSpace {
         self.init(id: id.rawValue, content: content)
     }
 }
+
+extension OpenImmersiveSpaceAction {
+
+    /// Convenience function that allows the application to open an immersive space by accepting a known `VimImmersiveSpace`
+    /// - Parameters:
+    ///   - id: the vim immersive space
+    /// - Returns: the action result.
+    @discardableResult
+    @MainActor func callAsFunction(id: VimImmersiveSpace) async -> OpenImmersiveSpaceAction.Result {
+        await callAsFunction(id: id.rawValue)
+    }
+
+}
+
+#endif
