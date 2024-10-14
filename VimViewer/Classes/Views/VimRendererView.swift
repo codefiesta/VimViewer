@@ -18,9 +18,7 @@ struct VimRendererView: View {
             // The renderer
             VimRendererContainerView(vim: vim)
 
-            if let geometry = vim.geometry {
-                GeometryStateView(geometry: geometry)
-            }
+            GeometryStateView(geometry: vim.geometry)
 
             HStack {
                 VimToolbarView()
@@ -34,6 +32,11 @@ struct GeometryStateView: View {
 
     @ObservedObject
     var geometry: Geometry
+
+    init?(geometry: Geometry?) {
+        guard let geometry else { return nil }
+        self.geometry = geometry
+    }
 
     var body: some View {
         VStack {
