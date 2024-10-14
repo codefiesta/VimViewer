@@ -12,6 +12,24 @@ struct VimModelDetailView: View {
 
     @EnvironmentObject
     var vim: Vim
+
+    @Environment(\.openWindow)
+    var openWindow
+
+    @Environment(\.dismissWindow)
+    private var dismissWindow
+
+    #if os(visionOS)
+    @Environment(\.openImmersiveSpace)
+    var openImmersiveSpace
+
+    @Environment(\.dismissImmersiveSpace)
+    var dismissImmersiveSpace
+    #endif
+
+    @State
+    var isPresented: Bool = false
+
     var model: VimModel
 
     var body: some View {
@@ -33,6 +51,11 @@ struct VimModelDetailView: View {
                 .foregroundStyle(.secondary)
         }
         .navigationTitle(model.name)
+        #if os(iOS)
+        .fullScreenCover(isPresented: $isPresented) {
+            VimRendererContainerView(vim: vim)
+        }
+        #endif
     }
 
     var readyView: some View {
@@ -49,7 +72,6 @@ struct VimModelDetailView: View {
                         Circle().stroke(.blue, lineWidth: 4)
                     }
                     .padding([.leading, .trailing])
-
 
                 Text(model.name)
                     .font(.title)
@@ -77,6 +99,13 @@ struct VimModelDetailView: View {
         Task {
             await vim.geometry?.load()
         }
+        #if os(iOS)
+        isPresented.toggle()
+        #elseif os(macOS)
+        openWindow(id: .renderer)
+        #elseif os(visionOS)
+        #endif
+
     }
 }
 

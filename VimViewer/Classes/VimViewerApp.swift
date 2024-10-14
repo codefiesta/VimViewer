@@ -23,5 +23,13 @@ struct VimViewerApp: App {
         }
         .environmentObject(vim)
         .modelContainer(modelContainer)
+
+        WindowGroup(id: .renderer) {
+            VimRendererContainerView(vim: vim)
+        }
+        .environmentObject(vim)
+        .modelContainer(modelContainer)
+
+
     }
 }
