@@ -49,7 +49,7 @@ struct VimViewerApp: App {
 
         // If we are running macOS or iOS build the renderer window group
         WindowGroup(id: .renderer) {
-            VimRendererContainerView(vim: vim)
+            VimRendererView()
         }
         .environmentObject(vim)
         .modelContainer(modelContainer)
