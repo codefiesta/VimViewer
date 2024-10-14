@@ -31,11 +31,9 @@ struct VimViewerApp: App {
 
         WindowGroup {
             VimMainContentView()
-            #if os(visionOS)
             .task {
-                await dataProvider.start()
+                await runStartupTasks()
             }
-            #endif
         }
         .environmentObject(vim)
         .modelContainer(modelContainer)
@@ -57,6 +55,12 @@ struct VimViewerApp: App {
         .modelContainer(modelContainer)
 
         #endif
+    }
 
+    /// Runs any application startup tasks.
+    private func runStartupTasks() async {
+        #if os(visionOS)
+        await dataProvider.start()
+        #endif
     }
 }

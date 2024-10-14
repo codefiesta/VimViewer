@@ -50,6 +50,7 @@ struct VimModelDetailView: View {
             Text(model.url.absoluteString)
                 .font(.caption)
                 .foregroundStyle(.secondary)
+                .padding()
         }
         .navigationTitle(model.name)
         #if os(iOS)
