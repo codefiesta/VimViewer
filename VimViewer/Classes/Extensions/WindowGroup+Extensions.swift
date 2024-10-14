@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Provides contants for application window groups.
+/// Provides enum constants for application window groups.
 enum VimWindowGroup: String {
 
     /// The 3D model renderer
@@ -16,7 +16,7 @@ enum VimWindowGroup: String {
 
 extension WindowGroup {
 
-    /// Convenience initializer that accepts a `VimWindowGroup`
+    /// Convenience initializer that accepts a `VimWindowGroup`  as an identifier.
     /// - Parameters:
     ///   - id: the vim window group
     ///   - makeContent: the make content closure

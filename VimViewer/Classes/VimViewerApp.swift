@@ -8,6 +8,9 @@
 import SwiftData
 import SwiftUI
 import VimKit
+#if os(visionOS)
+import VimKitCompositor
+#endif
 
 @main
 struct VimViewerApp: App {
@@ -30,6 +33,10 @@ struct VimViewerApp: App {
         }
         .environmentObject(vim)
         .modelContainer(modelContainer)
+        #else
+        ImmersiveSpace(id: .renderer) {
+            VimImmersiveSpaceContent(vim: vim, configuration: .init(), dataProviderContext: .init())
+        }
         #endif
 
     }
