@@ -9,32 +9,25 @@
 import SwiftUI
 import VimKit
 
-/// Provides enum constants for application immersive spaces.
-enum VimImmersiveSpace: String {
-
-    /// The 3D model renderer
-    case renderer
-}
-
 extension ImmersiveSpace {
 
-    /// Convenience initializer that accepts a `VimImmersiveSpace` as an identifier.
+    /// Convenience initializer that accepts a `VimSceneIdentifier` as the id.
     /// - Parameters:
-    ///   - id: the vim immersive space
+    ///   - id: the vim scene identifier
     ///   - content: the content builder.
-    nonisolated init(id: VimImmersiveSpace, @ImmersiveSpaceContentBuilder content: () -> Content) where Data == Never {
+    nonisolated init(id: VimSceneIdentifier, @ImmersiveSpaceContentBuilder content: () -> Content) where Data == Never {
         self.init(id: id.rawValue, content: content)
     }
 }
 
 extension OpenImmersiveSpaceAction {
 
-    /// Convenience function that allows the application to open an immersive space by accepting a known `VimImmersiveSpace`
+    /// Convenience function that allows the application to open an immersive space with a known `VimSceneIdentifier`
     /// - Parameters:
-    ///   - id: the vim immersive space
+    ///   - id: the vim scene identifier
     /// - Returns: the action result.
     @discardableResult
-    @MainActor func callAsFunction(id: VimImmersiveSpace) async -> OpenImmersiveSpaceAction.Result {
+    @MainActor func callAsFunction(id: VimSceneIdentifier) async -> OpenImmersiveSpaceAction.Result {
         await callAsFunction(id: id.rawValue)
     }
 

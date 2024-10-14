@@ -7,30 +7,23 @@
 
 import SwiftUI
 
-/// Provides enum constants for application window groups.
-enum VimWindowGroup: String {
-
-    /// The 3D model renderer
-    case renderer
-}
-
 extension WindowGroup {
 
-    /// Convenience initializer that accepts a `VimWindowGroup`  as an identifier.
+    /// Convenience initializer that accepts a `VimSceneIdentifier`  as the identifier.
     /// - Parameters:
-    ///   - id: the vim window group
+    ///   - id: the vim scene
     ///   - makeContent: the make content closure
-    nonisolated init(id: VimWindowGroup, @ViewBuilder makeContent: @escaping () -> Content) {
+    nonisolated init(id: VimSceneIdentifier, @ViewBuilder makeContent: @escaping () -> Content) {
         self.init(id: id.rawValue, makeContent: makeContent)
     }
 }
 
 extension OpenWindowAction {
 
-    /// Convenience function that allows the application to open a window by accepting a known `VimWindowGroup`
+    /// Convenience function that allows the application to open a window with a `VimSceneIdentifier`
     /// - Parameters:
-    ///   - id: the vim window group
-    @MainActor @preconcurrency func callAsFunction(id: VimWindowGroup) {
+    ///   - id: the vim scene identifier
+    @MainActor @preconcurrency func callAsFunction(id: VimSceneIdentifier) {
         callAsFunction(id: id.rawValue)
     }
 }
