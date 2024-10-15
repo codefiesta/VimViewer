@@ -17,9 +17,9 @@ struct VimRendererView: View {
         ZStack {
             // The renderer
             VimRendererContainerView(vim: vim)
-
+            // Geometry loading state
             GeometryStateView(geometry: vim.geometry)
-
+            // Toolbar
             HStack {
                 VimToolbarView()
             }
