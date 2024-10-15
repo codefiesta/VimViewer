@@ -146,11 +146,7 @@ struct VimModelDetailView: View {
             case .some(.unknown), .some(.error(_)):
                 // Only load the geometry if needed
                 await vim.geometry?.load()
-            case .some(.indexing):
-                break
-            case .some(.ready):
-                break
-            case .some(.loading):
+            case .some(.loading), .some(.indexing), .some(.ready):
                 break
             }
         }
