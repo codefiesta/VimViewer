@@ -1,5 +1,5 @@
 //
-//  VimRendererView.swift
+//  GeometryStateView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -7,26 +7,6 @@
 
 import SwiftUI
 import VimKit
-
-struct VimRendererView: View {
-
-    @EnvironmentObject
-    var vim: Vim
-
-    var body: some View {
-        ZStack {
-            // The renderer
-            VimRendererContainerView(vim: vim)
-            // Geometry loading state
-            GeometryStateView(geometry: vim.geometry)
-            // Toolbar
-            HStack {
-                VimToolbarView()
-            }
-        }
-    }
-
-}
 
 struct GeometryStateView: View {
 
@@ -54,9 +34,4 @@ struct GeometryStateView: View {
             }
         }
     }
-}
-
-#Preview {
-    let vim: Vim = .init()
-    VimRendererView().environmentObject(vim)
 }

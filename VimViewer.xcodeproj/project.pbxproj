@@ -35,9 +35,22 @@
 		CE2A98CB2CB97A9600502C69 /* VimViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VimViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CEFEE8772CBE8CDD0094FF50 /* Exceptions for "VimViewer" folder in "VimViewer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CE2A98AF2CB97A9500502C69 /* VimViewer */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CE2A98B22CB97A9500502C69 /* VimViewer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CEFEE8772CBE8CDD0094FF50 /* Exceptions for "VimViewer" folder in "VimViewer" target */,
+			);
 			path = VimViewer;
 			sourceTree = "<group>";
 		};
