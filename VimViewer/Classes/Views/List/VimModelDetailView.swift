@@ -54,8 +54,9 @@ struct VimModelDetailView: View {
         }
         .navigationTitle(model.name)
         #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $presentRenderer) {
-            VimRendererContainerView(vim: vim)
+            iOSModelViewer
         }
         #elseif os(visionOS)
         .onChange(of: presentRenderer) { _, newValue in
@@ -106,16 +107,53 @@ struct VimModelDetailView: View {
         }.padding()
     }
 
-    private func launchViewer() {
-        debugPrint("🚀")
-        Task {
-            await vim.geometry?.load()
+    /// The iOS specific model viewer.
+    #if os(iOS)
+    var iOSModelViewer: some View {
+        NavigationStack {
+            VimRendererView()
+                .toolbar {
+                    Button {
+                        presentRenderer.toggle()
+                    } label: {
+                        Image(systemName: "xmark")
+                        .renderingMode(.template)
+                    }
+                    .buttonStyle(.plain)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle(model.name)
+                }
         }
+    }
+    #endif
+
+    /// Launches the model viewer.
+    private func launchViewer() {
+        loadGeometry()
         #if os(macOS)
         openWindow(id: .renderer)
         #else
         presentRenderer.toggle()
         #endif
+    }
+
+    /// Loads the geometry (if needed)
+    private func loadGeometry() {
+        Task {
+            switch vim.geometry?.state {
+            case .none:
+                break
+            case .some(.unknown), .some(.error(_)):
+                // Only load the geometry if needed
+                await vim.geometry?.load()
+            case .some(.indexing):
+                break
+            case .some(.ready):
+                break
+            case .some(.loading):
+                break
+            }
+        }
     }
 }
 
