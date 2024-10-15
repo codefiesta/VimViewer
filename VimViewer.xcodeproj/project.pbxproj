@@ -613,7 +613,7 @@
 			repositoryURL = "https://github.com/codefiesta/VimKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.4;
+				minimumVersion = 0.1.7;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
