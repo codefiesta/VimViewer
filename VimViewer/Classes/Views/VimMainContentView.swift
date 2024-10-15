@@ -1,22 +1,22 @@
 //
-//  VimContentView.swift
+//  VimMainContentView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
 //
 
 import SwiftUI
+import VimKit
 
 // The main content view
-struct VimContentView: View {
+struct VimMainContentView: View {
 
     var body: some View {
-        VimListView()
+        VimModelListView()
             .padding()
-
     }
 }
 
 #Preview {
-    VimContentView()
+    VimMainContentView()
 }

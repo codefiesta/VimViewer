@@ -16,13 +16,13 @@ extension VimModelContainer {
             VimModel(name: "Residence",
                          url: URL(string: "https://vim02.azureedge.net/samples/residence.v1.2.75.vim")!),
             VimModel(name: "Dwelling",
-                         url: URL(string: "https://drive.usercontent.google.com/download?id=1pK6ekjRcLXwx41_kx8ct-TXt2oiIk64J&export=download&authuser=0&confirm=t&uuid=0a8e5cf8-edf5-4244-8673-74be5faca923&at=APZUnTXuhhajzYdg_pvKS63BUe_r:1706902849320")!),
+                         url: URL(string: "https://www.dropbox.com/scl/fi/fgfdtc2r42wy8p3tpd5da/dwelling.vim?rlkey=osryntcuqvnj5qypyh4hb96xp&st=3m8xdu9t&dl=1")!),
             VimModel(name: "Medical Tower",
                          url: URL(string: "https://vim02.azureedge.net/samples/skanska.vim")!),
             VimModel(name: "Substation",
-                         url: URL(string: "https://drive.usercontent.google.com/download?id=1rFt0L5aoqWDJss0PBPDoIHjGwmTLQBwG&export=download&authuser=0&confirm=t&uuid=0f967fed-a8fb-49c2-81ea-18ead5eca7ec&at=APZUnTVvSuTP1MDzbzfZS1InzR_O:1724008938685")!),
+                         url: URL(string: "https://www.dropbox.com/scl/fi/whi5faawkxjr9xiq148si/substation.vim?rlkey=xdfhuvq6xvd3sd9ffr3ouu1uj&st=gm7q1ite&dl=1")!),
             VimModel(name: "Snowdon Towers",
-                         url: URL(string: "https://vimcloudcdnprod.azureedge.net/383d1ca3-9d64-4a0f-e993-08daab96eebf/592827ab-9a5a-4ad7-8588-9ed9fbc0ab74?sv=2023-11-03&se=2024-09-26T00%3A44%3A28Z&sr=b&sp=r&rscd=attachment%3B+filename%3DSample+Snowdon+Towers.vim&sig=cQM6V4wiY1slUuksN8goh7qVcWlAyO6tQx0neA%2FnitU%3D")!),
+                         url: URL(string: "https://www.dropbox.com/scl/fi/cf4t5o0cjyxdn7ofpngsy/snowden.vim?rlkey=n368sb983zvpebz1pr9iic3ax&st=euigrt62&dl=1")!),
             VimModel(name: "Stadium",
                          url: URL(string: "https://vim02.azureedge.net/samples/stadium.vim")!)
         ]

@@ -26,5 +26,14 @@ jobs:
       run: brew install swiftlint
     - name: Lint
       run: swiftlint lint --config .swiftlint.yml
-    - name: Build
-      run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=iOS Simulator"
+    # iOS build (default)
+    - name: Build iOS
+      run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=iOS"
+    # macOS build (if the PR has the label of 'os:macOS' applied)
+    - name: Build macOS
+      if: ${{ contains(github.event.pull_request.labels.*.name, 'macOS') }}
+      run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=macOS"
+    # visionOS build (if the PR has the label of 'os:visionOS' applied)
+    - name: Build visionOS
+      if: ${{ contains(github.event.pull_request.labels.*.name, 'visionOS') }}
+      run:  xcodebuild -scheme VimViewer -configuration Debug CODE_SIGNING_ALLOWED=NO -destination "generic/platform=visionOS"

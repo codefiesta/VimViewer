@@ -6,13 +6,22 @@
 //
 
 import SwiftUI
+import VimKit
 
 struct FocusedModelKey: FocusedValueKey {
     typealias Value = VimModel
 }
 
-struct FocusedModelBinding: FocusedValueKey {
+struct FocusedModelBindingKey: FocusedValueKey {
     typealias Value = Binding<VimModel>
+}
+
+struct FocusedVimKey: FocusedValueKey {
+    typealias Value = Vim
+}
+
+struct FocusedVimBindingKey: FocusedValueKey {
+    typealias Value = Binding<Vim>
 }
 
 extension FocusedValues {
@@ -22,8 +31,18 @@ extension FocusedValues {
         set { self[FocusedModelKey.self] = newValue }
     }
 
-    var focusedModelBinding: FocusedModelBinding.Value? {
-        get { self[FocusedModelBinding.self] }
-        set { self[FocusedModelBinding.self] = newValue }
+    var focusedModelBinding: FocusedModelBindingKey.Value? {
+        get { self[FocusedModelBindingKey.self] }
+        set { self[FocusedModelBindingKey.self] = newValue }
+    }
+
+    var focusedVim: FocusedVimKey.Value? {
+        get { self[FocusedVimKey.self] }
+        set { self[FocusedVimKey.self] = newValue }
+    }
+
+    var focusedVimBinding: FocusedVimBindingKey.Value? {
+        get { self[FocusedVimBindingKey.self] }
+        set { self[FocusedVimBindingKey.self] = newValue }
     }
 }
