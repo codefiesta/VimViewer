@@ -34,19 +34,25 @@ struct VimModelListView: View {
             Text("Select a Model")
         }
         .onChange(of: model) { _, _ in
-            handleModelChange()
+            Task {
+                await handleModelChange()
+            }
         }
     }
 
     /// Handles a model selection change event.
-    private func handleModelChange() {
+    private func handleModelChange() async {
         guard let model else { return }
-        Task {
+        let loadTask = Task {
             await vim.load(from: model.url)
-
             if model.previewImageName == nil {
                 model.previewImageName = vim.assets?.previewImageName
             }
+        }
+        // Wait for the file to be loaded
+        await _ = loadTask.value
+        Task {
+            await vim.db?.import()
         }
     }
 }
