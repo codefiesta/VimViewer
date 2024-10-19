@@ -12,9 +12,6 @@ import VimKit
 import VimKitCompositor
 #endif
 
-// The default window size of the viewer on macOS
-private let defaultWindowMinSize: CGSize = .init(width: 1024, height: 768)
-
 @main
 struct VimViewerApp: App {
 
@@ -48,7 +45,7 @@ struct VimViewerApp: App {
             VimImmersiveSpaceContent(vim: vim, dataProvider: dataProvider)
         }
 
-        #else
+        #elseif os(macOS)
 
         // If we are running macOS or iOS build the renderer window group
         WindowGroup(id: .renderer) {
@@ -57,7 +54,6 @@ struct VimViewerApp: App {
         .environmentObject(vim)
         .modelContainer(modelContainer)
         .defaultPosition(.topLeading)
-        .defaultSize(width: NSScreen.main?.frame.width ?? defaultWindowMinSize.width, height: NSScreen.main?.frame.height ?? defaultWindowMinSize.height)
 
         #endif
     }

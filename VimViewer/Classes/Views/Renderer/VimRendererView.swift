@@ -20,9 +20,45 @@ struct VimRendererView: View {
             // Geometry loading state
             GeometryStateView(geometry: vim.geometry)
             // Toolbar
+            VimToolbarView()
+            // Layover (Popovers)
+            layoverViews
+        }.onReceive(vim.events) { event in
+            handleEvent(event)
+        }
+    }
+
+    /// Provides a 3 column layover view.
+    private var layoverViews: some View {
+        ZStack {
             HStack {
-                VimToolbarView()
+                // Column 1
+                VStack {
+                    VimHiddenElementsView()
+                    Spacer()
+                }
+                // Column 2
+                Spacer()
+                // Column 3
+                VStack {
+                    VimElementPopoverView()
+                    Spacer()
+                }
             }
+        }
+        .padding()
+    }
+
+    /// Handles vim events.
+    /// - Parameter event: the event to handle
+    private func handleEvent(_ event: Vim.Event) {
+        switch event {
+        case .empty:
+            break
+        case .selected(let id, let selected, let count, let position):
+            break
+        case .hidden(let count):
+            break
         }
     }
 }
