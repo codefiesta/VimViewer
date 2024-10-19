@@ -13,6 +13,9 @@ struct VimRendererView: View {
     @EnvironmentObject
     var vim: Vim
 
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
+
     var body: some View {
         ZStack {
             // The renderer
@@ -52,19 +55,14 @@ struct VimRendererView: View {
     /// Handles vim events.
     /// - Parameter event: the event to handle
     private func handleEvent(_ event: Vim.Event) {
-        switch event {
-        case .empty:
-            break
-        case .selected(let id, let selected, let count, let position):
-            break
-        case .hidden(let count):
-            break
-        }
+        viewModel.update(event)
     }
 }
 
 #Preview {
     let vim: Vim = .init()
-    VimRendererView().environmentObject(vim)
+    VimRendererView()
+        .environmentObject(vim)
+        .environment(VimViewModel())
 }
 #endif

@@ -18,6 +18,9 @@ struct VimViewerApp: App {
     @Environment(\.vim)
     var vim: Vim
 
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
+
     #if os(visionOS)
 
     @Environment(\.dataProvider)
@@ -36,6 +39,7 @@ struct VimViewerApp: App {
             }
         }
         .environmentObject(vim)
+        .environment(viewModel)
         .modelContainer(modelContainer)
 
         #if os(visionOS)

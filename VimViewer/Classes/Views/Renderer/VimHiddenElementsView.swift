@@ -13,23 +13,29 @@ struct VimHiddenElementsView: View {
     @EnvironmentObject
     var vim: Vim
 
-    var count: Int
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
 
-    init?(count: Int = .zero) {
-        guard count > .zero else { return nil }
-        self.count = count
+    var hiddenCount: Int {
+        viewModel.hiddenCount
+    }
+
+    var isVisible: Bool {
+        viewModel.hiddenCount > .zero
     }
 
     var body: some View {
         ZStack {
-            HStack {
-                Text("\(count) Hidden Objects")
-                Divider().overlay(.primary)
-                unhideButton
+            if isVisible {
+                HStack {
+                    Text("\(hiddenCount) Hidden Objects")
+                    Divider().overlay(.primary)
+                    unhideButton
+                }
+                .fixedSize()
+                .padding()
+                .background(Color.black.opacity(0.65)).cornerRadius(8)
             }
-            .fixedSize()
-            .padding()
-            .background(Color.black.opacity(0.65)).cornerRadius(8)
         }
     }
 
@@ -46,6 +52,12 @@ struct VimHiddenElementsView: View {
 }
 
 #Preview {
+
     let vim: Vim = .init()
-    VimHiddenElementsView(count: 1).environmentObject(vim)
+    var viewModel: VimViewModel = .init()
+    viewModel.hiddenCount = 10
+
+    return VimHiddenElementsView()
+        .environmentObject(vim)
+        .environment(viewModel)
 }
