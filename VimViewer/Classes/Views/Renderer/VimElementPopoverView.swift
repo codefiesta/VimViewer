@@ -20,9 +20,8 @@ struct VimElementPopoverView: View {
         viewModel.id != nil
     }
 
-    var element: Database.Element? {
-        nil
-    }
+    /// The database element associated with the currently selected instance id.
+    var element: Database.Element?
 
     var body: some View {
         ZStack {
@@ -59,9 +58,9 @@ struct VimElementPopoverView: View {
     var hideButton: some View {
         Button {
             guard let id = viewModel.id else { return }
-                Task {
-                    await vim.hide(ids: [id])
-                }
+            Task {
+                await vim.hide(ids: [id])
+            }
         } label: {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "eye.slash")
@@ -73,6 +72,7 @@ struct VimElementPopoverView: View {
 
     var hideSimilarButton: some View {
         Button {
+
         } label: {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "eye.slash.fill")

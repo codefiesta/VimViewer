@@ -35,13 +35,16 @@ struct VimRendererView: View {
     private var layoverViews: some View {
         ZStack {
             HStack {
+
                 // Column 1
                 VStack {
                     VimHiddenElementsView()
                     Spacer()
                 }
+
                 // Column 2
                 Spacer()
+
                 // Column 3
                 VStack {
                     VimElementPopoverView()
@@ -52,7 +55,7 @@ struct VimRendererView: View {
         .padding()
     }
 
-    /// Handles vim events.
+    /// Handles vim events by updating the view model.
     /// - Parameter event: the event to handle
     private func handleEvent(_ event: Vim.Event) {
         viewModel.update(event)

@@ -16,10 +16,10 @@ final class VimViewModel {
 
     /// Holds the id of the currently selected instance id.
     var id: Int?
-    /// Holds the current total hidden count.
+    /// Holds the current total hidden instances count.
     var hiddenCount: Int = 0
 
-    /// Updates the view model from emitted  event data.
+    /// Updates the view model from emitted event data.
     /// - Parameter event: the event data to process.
     func update(_ event: Vim.Event) {
         switch event {
