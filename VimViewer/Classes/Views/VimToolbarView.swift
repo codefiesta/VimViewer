@@ -14,8 +14,12 @@ struct VimToolbarView: View {
     @EnvironmentObject
     var vim: Vim
 
-    @Environment(\.modelContext)
-    var modelContext
+    /// Uses the vim db model container main context.
+    /// TODO: Need to investigate setting the from `.modelContainer(vim.db.modelContainer)`
+    private var modelContext: ModelContext? {
+        guard let db = vim.db, db.state == .ready else { return nil }
+        return db.modelContainer.mainContext
+    }
 
     var body: some View {
 
@@ -39,9 +43,19 @@ struct VimToolbarView: View {
         .padding()
     }
 
+    /// Sends the user to the home viewpoint.
+    private func goHome() {
+        guard let modelContext else { return }
+        var fetchDescriptor = FetchDescriptor<Database.View>(sortBy: [SortDescriptor(\Database.View.index)])
+        fetchDescriptor.fetchLimit = 1
+        guard let views = try? modelContext.fetch(fetchDescriptor), views.isNotEmpty else { return }
+        let view = views[0]
+        vim.camera.update(view.position, view.direction)
+    }
+
     var homeButton: some View {
         Button(action: {
-
+            goHome()
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "house").foregroundColor(.white)
