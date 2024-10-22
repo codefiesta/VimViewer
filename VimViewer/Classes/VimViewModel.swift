@@ -14,10 +14,24 @@ final class VimViewModel {
     /// Shared application view model.
     static let shared: VimViewModel = .init()
 
+    /// Provides enum constants for view model presentables.
+    enum Presentable: Sendable {
+        case none
+        case inspector
+    }
+
     /// Holds the id of the currently selected instance id.
     var id: Int?
     /// Holds the current total hidden instances count.
     var hiddenCount: Int = 0
+    /// Boolean indicating if a presentable should be presented or not.
+    var isPresenting: Bool = false
+    /// The current presentable (most likely being displayed as a `.sheet{...}`).
+    var presentable: Presentable = .none {
+        didSet {
+            isPresenting.toggle()
+        }
+    }
 
     /// Updates the view model from emitted event data.
     /// - Parameter event: the event data to process.

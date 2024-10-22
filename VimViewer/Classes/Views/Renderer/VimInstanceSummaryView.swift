@@ -93,7 +93,7 @@ struct VimInstanceSummaryView: View {
 
     var inspectButton: some View {
         Button {
-
+            viewModel.presentable = .inspector
         } label: {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "info.circle")

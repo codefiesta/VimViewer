@@ -62,7 +62,21 @@ struct VimInstanceInspectorView: View {
                 VimElementParametersView(scope: propertyScope, element: element)
             }
         }
+        .onAppear {
+            load()
+        }
+    }
 
+    /// Loads the selected instance element data from the database.
+    private func load() {
+        guard let id = viewModel.id else { return }
+        let index = Int64(id)
+        let predicate = #Predicate<Database.Node>{ $0.index == index }
+        var fetchDescriptor = FetchDescriptor<Database.Node>(predicate: predicate)
+        fetchDescriptor.fetchLimit = 1
+        guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return
+        }
+        element = results.first?.element
     }
 }
 

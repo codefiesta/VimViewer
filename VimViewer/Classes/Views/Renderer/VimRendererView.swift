@@ -30,6 +30,11 @@ struct VimRendererView: View {
         .onReceive(vim.events) { event in
             handleEvent(event)
         }
+        .sheet(isPresented: .constant(viewModel.isPresenting)) {
+            sheetView
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
         .modelContainer(optional: vim.db?.modelContainer)
     }
 
@@ -55,6 +60,28 @@ struct VimRendererView: View {
             }
         }
         .padding()
+    }
+
+    private var sheetView: some View {
+        NavigationStack {
+            switch viewModel.presentable {
+            case .none:
+                EmptyView()
+            case .inspector:
+                VimInstanceInspectorView()
+                    .toolbar {
+                        sheetToolbar
+                    }
+            }
+        }
+    }
+
+    private var sheetToolbar: some View {
+        Button {
+            viewModel.presentable = .none
+        } label: {
+            Image(systemName: "xmark")
+        }
     }
 
     /// Handles vim events by updating the view model.
