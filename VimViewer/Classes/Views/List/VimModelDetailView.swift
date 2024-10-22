@@ -31,7 +31,7 @@ struct VimModelDetailView: View {
     @State
     var presentRenderer: Bool = false
 
-    var model: VimModel
+    var model: VimModelDescriptor
 
     var body: some View {
 

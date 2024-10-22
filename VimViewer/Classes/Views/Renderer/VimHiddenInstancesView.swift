@@ -8,7 +8,7 @@
 import SwiftUI
 import VimKit
 
-struct VimHiddenElementsView: View {
+struct VimHiddenInstancesView: View {
 
     @EnvironmentObject
     var vim: Vim
@@ -20,6 +20,7 @@ struct VimHiddenElementsView: View {
         viewModel.hiddenCount
     }
 
+    /// Determines if the view is visible or not
     var isVisible: Bool {
         viewModel.hiddenCount > .zero
     }
@@ -54,10 +55,10 @@ struct VimHiddenElementsView: View {
 #Preview {
 
     let vim: Vim = .init()
-    var viewModel: VimViewModel = .init()
+    let viewModel: VimViewModel = .init()
     viewModel.hiddenCount = 10
 
-    return VimHiddenElementsView()
+    return VimHiddenInstancesView()
         .environmentObject(vim)
         .environment(viewModel)
 }

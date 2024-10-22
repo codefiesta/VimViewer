@@ -8,12 +8,12 @@
 import Foundation
 import SwiftData
 
-/// A type that holds model meta data.
+/// A type that holds model desciptor data.
 @Model
-class VimModel {
+class VimModelDescriptor {
 
     /// Index the model fields.
-    #Index<VimModel>([\.name])
+    #Index<VimModelDescriptor>([\.name])
 
     /// The model name.
     var name: String

@@ -38,7 +38,7 @@ struct VimRendererView: View {
 
                 // Column 1
                 VStack {
-                    VimHiddenElementsView()
+                    VimHiddenInstancesView()
                     Spacer()
                 }
 
@@ -47,7 +47,7 @@ struct VimRendererView: View {
 
                 // Column 3
                 VStack {
-                    VimElementPopoverView()
+                    VimInstancePopoverView()
                     Spacer()
                 }
             }

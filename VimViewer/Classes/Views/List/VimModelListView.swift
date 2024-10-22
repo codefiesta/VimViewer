@@ -14,11 +14,11 @@ struct VimModelListView: View {
     @EnvironmentObject
     var vim: Vim
 
-    @Query(sort: \VimModel.name)
-    var models: [VimModel]
+    @Query(sort: \VimModelDescriptor.name)
+    var models: [VimModelDescriptor]
 
     @State
-    var model: VimModel?
+    var model: VimModelDescriptor?
 
     var body: some View {
         NavigationSplitView {

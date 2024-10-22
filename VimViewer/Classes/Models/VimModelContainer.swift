@@ -8,7 +8,7 @@
 import SwiftData
 
 private let models: [any PersistentModel.Type] = [
-    VimModel.self
+    VimModelDescriptor.self
 ]
 
 class VimModelContainer {
@@ -27,7 +27,7 @@ class VimModelContainer {
 
         // Insert mock data
         let modelContext: ModelContext = ModelContext(modelContainer)
-        let mocked: [VimModel] = VimModelContainer.mocks
+        let mocked: [VimModelDescriptor] = VimModelContainer.mocks
         for mock in mocked {
             modelContext.insert(mock)
         }

@@ -13,7 +13,7 @@ struct VimModelRowView: View {
     @EnvironmentObject
     var vim: Vim
 
-    var model: VimModel
+    var model: VimModelDescriptor
 
     var isCached: Bool {
         model.url.isCached
