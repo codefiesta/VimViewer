@@ -24,15 +24,17 @@ struct VimRendererView: View {
             GeometryStateView(geometry: vim.geometry)
             // Toolbar
             VimToolbarView()
-            // Layover (Popovers)
-            layoverViews
-        }.onReceive(vim.events) { event in
+            // Info Views
+            infoViews
+        }
+        .onReceive(vim.events) { event in
             handleEvent(event)
         }
+        .modelContainer(optional: vim.db?.modelContainer)
     }
 
-    /// Provides a 3 column layover view.
-    private var layoverViews: some View {
+    /// Provides a 3 column layout view of quick actions and summary information.
+    private var infoViews: some View {
         ZStack {
             HStack {
 
@@ -47,7 +49,7 @@ struct VimRendererView: View {
 
                 // Column 3
                 VStack {
-                    VimInstancePopoverView()
+                    VimInstanceSummaryView()
                     Spacer()
                 }
             }

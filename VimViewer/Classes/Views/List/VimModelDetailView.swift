@@ -56,7 +56,7 @@ struct VimModelDetailView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $presentRenderer) {
-            iOSModelViewer
+            rendererView
         }
         #elseif os(visionOS)
         .onChange(of: presentRenderer) { _, newValue in
@@ -91,12 +91,7 @@ struct VimModelDetailView: View {
 
                 Spacer()
 
-                Button {
-                    launchViewer()
-                } label: {
-                    Image(systemName: "cube")
-                }
-                .controlSize(.extraLarge)
+                launchButton
             }
 
 
@@ -107,9 +102,9 @@ struct VimModelDetailView: View {
         }.padding()
     }
 
-    /// The iOS specific model viewer.
+    /// The iOS specific model renderer.
     #if os(iOS)
-    var iOSModelViewer: some View {
+    var rendererView: some View {
         NavigationStack {
             VimRendererView()
                 .toolbar {
@@ -126,6 +121,15 @@ struct VimModelDetailView: View {
         }
     }
     #endif
+
+    private var launchButton: some View {
+        Button {
+            launchViewer()
+        } label: {
+            Image(systemName: "cube")
+        }
+        .controlSize(.extraLarge)
+    }
 
     /// Launches the model viewer.
     private func launchViewer() {
