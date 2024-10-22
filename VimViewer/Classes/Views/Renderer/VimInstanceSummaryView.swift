@@ -20,13 +20,14 @@ struct VimInstanceSummaryView: View {
     @Environment(\.modelContext)
     var modelContext
 
-    var isVisible: Bool {
-        viewModel.id != nil
-    }
-
     /// The database element associated with the currently selected instance id.
     @State
     var element: Database.Element?
+
+    /// Determines if the summary view is visible or not.
+    var isVisible: Bool {
+        viewModel.id != nil
+    }
 
     var body: some View {
         ZStack {
