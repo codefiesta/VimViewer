@@ -1,5 +1,5 @@
 //
-//  VimModelContainer+Extensions.swift
+//  VimModelContainer+PreviewContent.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-extension VimModelContainer {
+extension ModelContainer {
 
     /// Provides the default mock / sample files.
     static let mocks: [VimModelDescriptor] = {

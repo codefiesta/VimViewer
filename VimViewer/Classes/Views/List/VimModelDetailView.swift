@@ -5,6 +5,7 @@
 //  Created by Kevin McKee
 //
 
+import SwiftData
 import SwiftUI
 import VimKit
 
@@ -158,7 +159,7 @@ struct VimModelDetailView: View {
 }
 
 #Preview {
-    let model = VimModelContainer.mocks.first!
+    let model = ModelContainer.mocks.first!
     let vim: Vim = .init()
     VimModelDetailView(model: model).environmentObject(vim)
 }

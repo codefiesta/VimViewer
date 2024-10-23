@@ -5,6 +5,7 @@
 //  Created by Kevin McKee
 //
 
+import SwiftData
 import SwiftUI
 import VimKit
 
@@ -99,5 +100,5 @@ struct VimModelRowView: View {
 }
 
 #Preview {
-    VimModelRowView(model: VimModelContainer.mocks.first!)
+    VimModelRowView(model: ModelContainer.mocks.first!)
 }

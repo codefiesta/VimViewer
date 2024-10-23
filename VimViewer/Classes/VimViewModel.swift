@@ -6,6 +6,7 @@
 //
 
 import Observation
+import SwiftData
 import VimKit
 
 @Observable
@@ -20,6 +21,12 @@ final class VimViewModel {
         case inspector
     }
 
+    /// The model container.
+    let modelContainer: ModelContainer = .default
+    /// The model descriptor.
+    var descriptor: VimModelDescriptor?
+    /// Convenience var for the model name.
+    var name: String { descriptor?.name ?? .empty }
     /// Holds the id of the currently selected instance id.
     var id: Int?
     /// Holds the current total hidden instances count.
