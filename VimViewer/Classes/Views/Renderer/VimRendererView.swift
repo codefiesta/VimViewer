@@ -30,10 +30,15 @@ struct VimRendererView: View {
         .onReceive(vim.events) { event in
             handleEvent(event)
         }
-        .sheet(isPresented: .constant(viewModel.isPresenting)) {
-            sheetView
-                .presentationDetents([.medium, .large])
-                .presentationDragIndicator(.visible)
+        .sheet(isPresented: .constant(viewModel.isPresenting), onDismiss: onSheetDismiss) {
+            NavigationStack {
+                sheetView
+                    .toolbar {
+                        sheetToolbar
+                    }
+            }
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
         .modelContainer(optional: vim.db?.modelContainer)
     }
@@ -62,25 +67,32 @@ struct VimRendererView: View {
         .padding()
     }
 
+    /// Builds the sheet view based on the current presentable.
     private var sheetView: some View {
-        NavigationStack {
+        ZStack {
             switch viewModel.presentable {
             case .none:
                 EmptyView()
             case .inspector:
                 VimInstanceInspectorView()
-                    .toolbar {
-                        sheetToolbar
-                    }
             }
         }
     }
 
+    /// Builds the sheet toolbar items.
     private var sheetToolbar: some View {
         Button {
             viewModel.presentable = .none
         } label: {
             Image(systemName: "xmark")
+        }
+    }
+
+    /// Handles any sheet dismiss cleanup items.
+    private func onSheetDismiss() {
+        // Toggle the instance selection
+        if let id = viewModel.self.id {
+            vim.select(id: id)
         }
     }
 

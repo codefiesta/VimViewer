@@ -48,10 +48,10 @@ struct VimInstanceInspectorView: View {
         ScrollViewReader { proxy in
             if let element {
                 VimElementView(element: element)
-                .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                    .padding()
 
-                Picker("", selection: $propertyScope) {
+                Picker(.empty, selection: $propertyScope) {
                     ForEach(PropertySelectionScope.allCases, id: \.self) { scope in
                         Text(scope.displayName)
                     }
