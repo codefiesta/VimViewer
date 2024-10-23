@@ -14,41 +14,45 @@ struct VimModelListView: View {
     @EnvironmentObject
     var vim: Vim
 
-    @Query(sort: \VimModel.name)
-    var models: [VimModel]
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
+
+    @Query(sort: \VimModelDescriptor.name)
+    var models: [VimModelDescriptor]
 
     @State
-    var model: VimModel?
+    var selection: VimModelDescriptor?
 
     var body: some View {
         NavigationSplitView {
-            List(models, selection: $model) { model in
+            List(models, selection: $selection) { model in
                 NavigationLink(value: model) {
                     VimModelRowView(model: model)
                 }
             }
-            .navigationDestination(item: $model) { model in
+            .navigationDestination(item: $selection) { model in
                 VimModelDetailView(model: model)
             }
         } detail: {
             Text("Select a Model")
         }
-        .onChange(of: model) { _, _ in
+        .onChange(of: selection) { _, _ in
             Task {
-                await handleModelChange()
+                await handleModelSelection()
             }
         }
     }
 
     /// Handles a model selection change event.
-    private func handleModelChange() async {
-        guard let model else { return }
+    private func handleModelSelection() async {
+        guard let selection else { return }
+        viewModel.descriptor = selection
         let loadTask = Task {
             // Load the file
-            await vim.load(from: model.url)
+            await vim.load(from: selection.url)
             // Update the preview image
-            if model.previewImageName == nil {
-                model.previewImageName = vim.assets?.previewImageName
+            if selection.previewImageName == nil {
+                selection.previewImageName = vim.assets?.previewImageName
             }
         }
         // Wait for the file to be loaded
@@ -62,5 +66,5 @@ struct VimModelListView: View {
 
 #Preview {
     VimModelListView()
-        .modelContainer(VimModelContainer.shared.modelContainer)
+        .modelContainer(.default)
 }

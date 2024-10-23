@@ -5,6 +5,7 @@
 //  Created by Kevin McKee
 //
 
+import SwiftData
 import SwiftUI
 import VimKit
 
@@ -31,7 +32,7 @@ struct VimModelDetailView: View {
     @State
     var presentRenderer: Bool = false
 
-    var model: VimModel
+    var model: VimModelDescriptor
 
     var body: some View {
 
@@ -56,7 +57,7 @@ struct VimModelDetailView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $presentRenderer) {
-            iOSModelViewer
+            rendererView
         }
         #elseif os(visionOS)
         .onChange(of: presentRenderer) { _, newValue in
@@ -91,12 +92,7 @@ struct VimModelDetailView: View {
 
                 Spacer()
 
-                Button {
-                    launchViewer()
-                } label: {
-                    Image(systemName: "cube")
-                }
-                .controlSize(.extraLarge)
+                launchButton
             }
 
 
@@ -107,9 +103,9 @@ struct VimModelDetailView: View {
         }.padding()
     }
 
-    /// The iOS specific model viewer.
+    /// The iOS specific model renderer.
     #if os(iOS)
-    var iOSModelViewer: some View {
+    var rendererView: some View {
         NavigationStack {
             VimRendererView()
                 .toolbar {
@@ -126,6 +122,15 @@ struct VimModelDetailView: View {
         }
     }
     #endif
+
+    private var launchButton: some View {
+        Button {
+            launchViewer()
+        } label: {
+            Image(systemName: "cube")
+        }
+        .controlSize(.extraLarge)
+    }
 
     /// Launches the model viewer.
     private func launchViewer() {
@@ -154,7 +159,7 @@ struct VimModelDetailView: View {
 }
 
 #Preview {
-    let model = VimModelContainer.mocks.first!
+    let model = ModelContainer.mocks.first!
     let vim: Vim = .init()
     VimModelDetailView(model: model).environmentObject(vim)
 }

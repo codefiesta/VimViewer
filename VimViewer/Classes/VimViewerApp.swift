@@ -18,14 +18,15 @@ struct VimViewerApp: App {
     @Environment(\.vim)
     var vim: Vim
 
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
+
     #if os(visionOS)
 
     @Environment(\.dataProvider)
     var dataProvider: ARDataProvider
 
     #endif
-
-    let modelContainer = VimModelContainer.shared.modelContainer
 
     var body: some Scene {
 
@@ -36,7 +37,8 @@ struct VimViewerApp: App {
             }
         }
         .environmentObject(vim)
-        .modelContainer(modelContainer)
+        .environment(viewModel)
+        .modelContainer(.default)
 
         #if os(visionOS)
 
@@ -50,9 +52,10 @@ struct VimViewerApp: App {
         // If we are running macOS or iOS build the renderer window group
         WindowGroup(id: .renderer) {
             VimRendererView()
+                .navigationTitle(viewModel.name)
         }
         .environmentObject(vim)
-        .modelContainer(modelContainer)
+        .modelContainer(.default)
         .defaultPosition(.topLeading)
 
         #endif

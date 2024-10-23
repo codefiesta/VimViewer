@@ -14,12 +14,8 @@ struct VimToolbarView: View {
     @EnvironmentObject
     var vim: Vim
 
-    /// Uses the vim db model container main context.
-    /// TODO: Need to investigate setting the from `.modelContainer(vim.db.modelContainer)`
-    private var modelContext: ModelContext? {
-        guard let db = vim.db, db.state == .ready else { return nil }
-        return db.modelContainer.mainContext
-    }
+    @Environment(\.modelContext)
+    var modelContext
 
     var body: some View {
 
@@ -45,7 +41,6 @@ struct VimToolbarView: View {
 
     /// Sends the user to the home viewpoint.
     private func goHome() {
-        guard let modelContext else { return }
         var fetchDescriptor = FetchDescriptor<Database.View>(sortBy: [SortDescriptor(\Database.View.index)])
         fetchDescriptor.fetchLimit = 1
         guard let views = try? modelContext.fetch(fetchDescriptor), views.isNotEmpty else { return }

@@ -5,6 +5,7 @@
 //  Created by Kevin McKee
 //
 
+import SwiftData
 import SwiftUI
 import VimKit
 
@@ -13,7 +14,7 @@ struct VimModelRowView: View {
     @EnvironmentObject
     var vim: Vim
 
-    var model: VimModel
+    var model: VimModelDescriptor
 
     var isCached: Bool {
         model.url.isCached
@@ -99,5 +100,5 @@ struct VimModelRowView: View {
 }
 
 #Preview {
-    VimModelRowView(model: VimModelContainer.mocks.first!)
+    VimModelRowView(model: ModelContainer.mocks.first!)
 }
