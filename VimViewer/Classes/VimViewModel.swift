@@ -31,6 +31,8 @@ final class VimViewModel {
     var id: Int?
     /// Holds the current total hidden instances count.
     var hiddenCount: Int = 0
+    /// Boolean indicating if the renderer is active or not.
+    var isRendering: Bool = false
     /// Boolean indicating if a presentable should be presented or not.
     var isPresenting: Bool = false
     /// The current presentable (most likely being displayed as a `.sheet{...}`).

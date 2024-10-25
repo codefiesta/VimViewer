@@ -14,6 +14,9 @@ struct VimModelDetailView: View {
     @EnvironmentObject
     var vim: Vim
 
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
+
     @Environment(\.openWindow)
     var openWindow
 
@@ -61,6 +64,7 @@ struct VimModelDetailView: View {
         }
         #elseif os(visionOS)
         .onChange(of: presentRenderer) { _, newValue in
+            viewModel.isRendering = newValue
             Task { @MainActor in
                 if newValue {
                     await openImmersiveSpace(id: .renderer)
@@ -75,9 +79,7 @@ struct VimModelDetailView: View {
     var readyView: some View {
 
         VStack {
-
             HStack {
-
                 Image(file: model.previewImageName)?
                     .resizable()
                     .frame(maxWidth: 100, maxHeight: 100)
@@ -86,15 +88,11 @@ struct VimModelDetailView: View {
                         Circle().stroke(.blue, lineWidth: 4)
                     }
                     .padding([.leading, .trailing])
-
                 Text(model.name)
                     .font(.title)
-
                 Spacer()
-
                 launchButton
             }
-
 
             Divider()
 
@@ -125,7 +123,9 @@ struct VimModelDetailView: View {
 
     private var launchButton: some View {
         Button {
-            launchViewer()
+            Task { @MainActor in
+                await launchViewer()
+            }
         } label: {
             Image(systemName: "cube")
         }
@@ -133,28 +133,35 @@ struct VimModelDetailView: View {
     }
 
     /// Launches the model viewer.
-    private func launchViewer() {
-        loadGeometry()
-        #if os(macOS)
-        openWindow(id: .renderer)
-        #else
-        presentRenderer.toggle()
-        #endif
-    }
-
-    /// Loads the geometry (if needed)
-    private func loadGeometry() {
+    @MainActor
+    private func launchViewer() async {
         Task {
             switch vim.geometry?.state {
             case .none:
                 break
             case .some(.unknown), .some(.error(_)):
-                // Only load the geometry if needed
-                await vim.geometry?.load()
+                await loadGeometry()
             case .some(.loading), .some(.indexing), .some(.ready):
                 break
             }
+
+            #if os(macOS)
+            openWindow(id: .renderer)
+            #else
+            presentRenderer.toggle()
+            #endif
         }
+    }
+
+    /// Loads the geometry (if needed)
+    private func loadGeometry() async {
+        let loadTask = Task {
+            await vim.geometry?.load()
+        }
+        // If we are running visionOS, wait until the geometry has loaded
+        #if os(visionOS)
+        _ = await loadTask.value
+        #endif
     }
 }
 

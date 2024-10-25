@@ -6,8 +6,8 @@
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<true/>
-		<key>UISceneConfigurations</key>
-		<dict/>
+		<key>UIApplicationPreferredDefaultSceneSessionRole</key>
+		<string>UIWindowSceneSessionRoleApplication</string>
 	</dict>
 	<key>NSHandsTrackingUsageDescription</key>
 	<string>Allow the app to track hand gestures for 3D model interaction.</string>
