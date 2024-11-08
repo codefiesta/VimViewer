@@ -52,6 +52,7 @@ struct VimRendererView: View {
                 VStack {
                     VimHiddenInstancesView()
                     Spacer()
+                    VimStatsView()
                 }
 
                 // Column 2

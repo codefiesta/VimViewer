@@ -25,5 +25,14 @@ extension FormatStyle where Self == FloatingPointFormatStyle<Float> {
     }
 }
 
+extension FormatStyle where Self == FloatingPointFormatStyle<Double> {
+
+    /// Returns a default fractional style.
+    public static var `default`: FloatingPointFormatStyle<Double> {
+        let formatter: FloatingPointFormatStyle<Double> = .number
+        return formatter.precision(.integerAndFractionLength(integer: 3, fraction: 2)).grouping(.never)
+    }
+}
+
 
 
