@@ -13,6 +13,40 @@ struct VimStatsView: View {
     @EnvironmentObject
     var vim: Vim
 
+    /// Returns the colors for their corresponding range
+    private var colors: [Color] {
+        [
+            .red,
+            .orange,
+            .yellow,
+            .green
+        ]
+    }
+
+    /// Returns the ranges of culling percengtages.
+    private var ranges: [Range<Float>] {
+        [
+            0.0..<0.25,
+            0.25..<0.5,
+            0.5..<0.75,
+            0.75..<1.0
+        ]
+    }
+
+    /// Returns the culling percentage color.
+    var cullingPercentageColor: Color {
+        guard vim.stats.cullingPercentage > .zero else {
+            return .primary
+        }
+
+        for (i, range) in ranges.enumerated() {
+            if range.contains(vim.stats.cullingPercentage) {
+                return colors[i]
+            }
+        }
+        return .primary
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Geometry")
@@ -24,7 +58,10 @@ struct VimStatsView: View {
             Text("Stats:")
                 .font(.headline)
             Text("Commands: \(vim.stats.executedCommands) / \(vim.stats.totalCommands)")
-            Text("Culling: \(vim.stats.cullingPercentage.formatted(.percent.precision(.fractionLength(1))))")
+            HStack(spacing: 0) {
+                Text("Culling:")
+                Text(" \(vim.stats.cullingPercentage.formatted(.percent.precision(.fractionLength(1))))").foregroundStyle(cullingPercentageColor)
+            }
             Divider()
             Text("Latency")
                 .font(.headline)
