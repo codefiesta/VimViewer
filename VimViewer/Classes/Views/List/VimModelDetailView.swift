@@ -51,6 +51,7 @@ struct VimModelDetailView: View {
             }
 
             Spacer()
+
             Text(model.url.absoluteString)
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -101,8 +102,7 @@ struct VimModelDetailView: View {
         }.padding()
     }
 
-    /// The iOS specific model renderer.
-    #if os(iOS)
+    /// The model renderer.
     var rendererView: some View {
         NavigationStack {
             VimRendererView()
@@ -114,12 +114,13 @@ struct VimModelDetailView: View {
                         .renderingMode(.template)
                     }
                     .buttonStyle(.plain)
-                    .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle(model.name)
+                    #if os(iOS)
+                    .navigationBarTitleDisplayMode(.inline)
+                    #endif
                 }
         }
     }
-    #endif
 
     private var launchButton: some View {
         Button {
@@ -137,11 +138,9 @@ struct VimModelDetailView: View {
     private func launchViewer() async {
         Task {
             switch vim.geometry?.state {
-            case .none:
-                break
             case .some(.unknown), .some(.error(_)):
                 await loadGeometry()
-            case .some(.loading), .some(.indexing), .some(.ready):
+            case .none, .some(.loading), .some(.indexing), .some(.ready):
                 break
             }
 

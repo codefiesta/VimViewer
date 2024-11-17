@@ -14,24 +14,27 @@ struct VimStatsView: View {
     var vim: Vim
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Culling Stats:")
-                .bold()
-            HStack {
-                Text("\(vim.stats.executionRange.length)")
-                Text("/")
-                Text("\(vim.stats.commandRange.length)")
-                Text("commands")
-            }
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Geometry")
+                .font(.headline)
+            Text("Instances: \(vim.stats.instanceCount)")
+            Text("Meshes: \(vim.stats.meshCount)")
+            Text("Submeshes: \(vim.stats.submeshCount)")
             Divider()
-                .overlay(.primary)
-            Text("Latency:")
-                .bold()
+            Text("Stats:")
+                .font(.headline)
+            Text("Commands: \(vim.stats.executedCommands) / \(vim.stats.totalCommands)")
+            Text("Culling: \(vim.stats.cullingPercentage.formatted(.percent.precision(.fractionLength(1))))")
+            Divider()
+            Text("Latency")
+                .font(.headline)
             HStack {
                 Text("Mean: \(vim.stats.averageLatency.formatted(.default))")
                 Text("Max: \(vim.stats.maxLatency.formatted(.default))")
             }
+            .font(.caption)
         }
+        .font(.caption)
         .fixedSize()
         .padding()
         .background(Color.black.opacity(0.65))
