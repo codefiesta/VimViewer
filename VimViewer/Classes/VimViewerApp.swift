@@ -44,7 +44,7 @@ struct VimViewerApp: App {
 
         // If we are running visionOS, build the immersive space
         ImmersiveSpace(id: .renderer) {
-            VimImmersiveSpaceContent(vim: vim, dataProvider: dataProvider)
+            CompositorRendererImmersiveSpaceContent(vim: vim, dataProvider: dataProvider)
         }
 
         #elseif os(macOS)

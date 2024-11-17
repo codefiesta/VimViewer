@@ -19,7 +19,7 @@ struct VimRendererView: View {
     var body: some View {
         ZStack {
             // The renderer
-            VimRendererContainerView(vim: vim)
+            RendererContainerView(vim: vim)
             // Geometry loading state
             GeometryStateView(geometry: vim.geometry)
             // Toolbar
@@ -52,6 +52,7 @@ struct VimRendererView: View {
                 VStack {
                     VimHiddenInstancesView()
                     Spacer()
+                    VimStatsView()
                 }
 
                 // Column 2
