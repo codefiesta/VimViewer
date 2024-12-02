@@ -21,6 +21,7 @@ struct VimToolbarView: View {
 
         VStack {
 
+            VimCameraDebugView(camera: vim.camera)
             Spacer()
 
             HStack(alignment: .bottom, spacing: 16) {
