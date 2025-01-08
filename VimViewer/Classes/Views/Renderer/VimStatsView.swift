@@ -29,7 +29,7 @@ struct VimStatsView: View {
             0.0..<0.25,
             0.25..<0.5,
             0.5..<0.75,
-            0.75..<1.0
+            0.75..<1.01
         ]
     }
 
@@ -54,15 +54,20 @@ struct VimStatsView: View {
             Text("Instances: \(vim.stats.instanceCount)")
             Text("Meshes: \(vim.stats.meshCount)")
             Text("Submeshes: \(vim.stats.submeshCount)")
+
             Divider()
-            Text("Stats:")
+
+            Text("Stats")
                 .font(.headline)
-            Text("Commands: \(vim.stats.executedCommands) / \(vim.stats.totalCommands)")
+            Text("Grid Size: \(vim.stats.gridSize.width) x \(vim.stats.gridSize.height)")
+            Text("Draw Calls: \(vim.stats.executedCommands) / \(vim.stats.totalCommands)")
             HStack(spacing: 0) {
                 Text("Culling:")
                 Text(" \(vim.stats.cullingPercentage.formatted(.percent.precision(.fractionLength(1))))").foregroundStyle(cullingPercentageColor)
             }
+
             Divider()
+
             Text("Latency")
                 .font(.headline)
             HStack {

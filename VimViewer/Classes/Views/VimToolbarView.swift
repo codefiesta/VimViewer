@@ -21,6 +21,7 @@ struct VimToolbarView: View {
 
         VStack {
 
+            //VimCameraDebugView(camera: vim.camera)
             Spacer()
 
             HStack(alignment: .bottom, spacing: 16) {
@@ -45,7 +46,7 @@ struct VimToolbarView: View {
         fetchDescriptor.fetchLimit = 1
         guard let views = try? modelContext.fetch(fetchDescriptor), views.isNotEmpty else { return }
         let view = views[0]
-        vim.camera.update(view.position, view.direction)
+        vim.camera.look(in: view.direction, from: view.position)
     }
 
     var homeButton: some View {
