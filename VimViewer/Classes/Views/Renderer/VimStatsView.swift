@@ -60,7 +60,7 @@ struct VimStatsView: View {
             Text("Stats")
                 .font(.headline)
             Text("Grid Size: \(vim.stats.gridSize.width) x \(vim.stats.gridSize.height)")
-            Text("Commands: \(vim.stats.executedCommands) / \(vim.stats.totalCommands)")
+            Text("Draw Calls: \(vim.stats.executedCommands) / \(vim.stats.totalCommands)")
             HStack(spacing: 0) {
                 Text("Culling:")
                 Text(" \(vim.stats.cullingPercentage.formatted(.percent.precision(.fractionLength(1))))").foregroundStyle(cullingPercentageColor)
