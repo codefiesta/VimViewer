@@ -30,9 +30,6 @@ struct VimInstanceInspectorView: View {
     @EnvironmentObject
     var vim: Vim
 
-    @Environment(\.viewModel)
-    var viewModel: VimViewModel
-
     @Environment(\.modelContext)
     var modelContext
 
@@ -42,6 +39,16 @@ struct VimInstanceInspectorView: View {
 
     @State
     var propertyScope: PropertySelectionScope = .instance
+
+    /// The instance id.
+    var id: Int
+
+    /// Common Initializer
+    /// - Parameter id: the instance id
+    init?(id: Int?) {
+        guard let id else { return nil }
+        self.id = id
+    }
 
     var body: some View {
 
@@ -69,7 +76,6 @@ struct VimInstanceInspectorView: View {
 
     /// Loads the selected instance element data from the database.
     private func load() {
-        guard let id = viewModel.id else { return }
         let index = Int64(id)
         let predicate = #Predicate<Database.Node>{ $0.index == index }
         var fetchDescriptor = FetchDescriptor<Database.Node>(predicate: predicate)
@@ -81,5 +87,5 @@ struct VimInstanceInspectorView: View {
 }
 
 #Preview {
-    VimInstanceInspectorView()
+    VimInstanceInspectorView(id: 0)
 }

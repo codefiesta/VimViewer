@@ -40,7 +40,9 @@ struct VimElementView: View {
                 Text(element.uniqueId ?? .empty)
             }
         }
+        #if !os(macOS)
         .navigationTitle(Text("\(element.name ?? .empty) [\(element.elementId.formatted(.plain))]"))
+        #endif
     }
 }
 

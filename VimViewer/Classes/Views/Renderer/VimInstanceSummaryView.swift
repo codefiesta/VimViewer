@@ -24,49 +24,51 @@ struct VimInstanceSummaryView: View {
     @State
     var element: Database.Element?
 
-    /// Determines if the summary view is visible or not.
-    var isVisible: Bool {
-        viewModel.id != nil
+    /// The instance id.
+    var id: Int
+
+    /// Common Initializer
+    /// - Parameter id: the instance id
+    init?(id: Int?) {
+        guard let id else { return nil }
+        self.id = id
     }
 
     var body: some View {
         ZStack {
-            if isVisible {
-                VStack {
-                    Text("\(element?.name ?? .empty) [\(element?.elementId.formatted(.plain) ?? .empty)]")
-                        .bold()
-                        .padding()
-                    HStack {
-                        Text("Category").font(.caption2).bold()
-                        Text(element?.category?.name ?? .empty).font(.caption2)
-                    }.padding([.bottom], 4)
+            VStack {
+                Text("\(element?.name ?? .empty) [\(element?.elementId.formatted(.plain) ?? .empty)]")
+                    .bold()
+                    .padding()
+                HStack {
+                    Text("Category").font(.caption2).bold()
+                    Text(element?.category?.name ?? .empty).font(.caption2)
+                }.padding([.bottom], 4)
 
-                    HStack {
-                        Text("Family").font(.caption2).bold()
-                        Text(element?.familyName ?? .empty).font(.caption2)
-                    }
-                    .padding([.bottom], 8)
+                HStack {
+                    Text("Family").font(.caption2).bold()
+                    Text(element?.familyName ?? .empty).font(.caption2)
+                }
+                .padding([.bottom], 8)
 
-                    HStack(alignment: .bottom, spacing: 16) {
-                        hideButton
-                        hideSimilarButton
-                        inspectButton
-                    }
+                HStack(alignment: .bottom, spacing: 16) {
+                    hideButton
+                    hideSimilarButton
+                    inspectButton
                 }
-                .padding([.leading, .trailing, .bottom])
-                .padding([.top], 4)
-                .background(Color.black.opacity(0.65))
-                .cornerRadius(8)
-                .onAppear {
-                    load()
-                }
+            }
+            .padding([.leading, .trailing, .bottom])
+            .padding([.top], 4)
+            .background(Color.black.opacity(0.65))
+            .cornerRadius(8)
+            .onAppear {
+                load()
             }
         }
     }
 
     var hideButton: some View {
         Button {
-            guard let id = viewModel.id else { return }
             Task {
                 await vim.hide(ids: [id])
             }
@@ -93,7 +95,7 @@ struct VimInstanceSummaryView: View {
 
     var inspectButton: some View {
         Button {
-            viewModel.presentable = .inspector
+            viewModel.inspector = .instance
         } label: {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "info.circle")
@@ -105,7 +107,6 @@ struct VimInstanceSummaryView: View {
 
     /// Loads the selected instance element data from the database.
     private func load() {
-        guard let id = viewModel.id else { return }
         let index = Int64(id)
         let predicate = #Predicate<Database.Node>{ $0.index == index }
         var fetchDescriptor = FetchDescriptor<Database.Node>(predicate: predicate)
@@ -134,7 +135,7 @@ struct VimInstanceSummaryView: View {
 
 #Preview {
     let vim: Vim = .init()
-    VimInstanceSummaryView()
+    VimInstanceSummaryView(id: 0)
         .environmentObject(vim)
         .environment(VimViewModel())
 }

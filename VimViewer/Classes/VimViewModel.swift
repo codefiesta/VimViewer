@@ -15,10 +15,12 @@ final class VimViewModel {
     /// Shared application view model.
     static let shared: VimViewModel = .init()
 
-    /// Provides enum constants for view model presentables.
-    enum Presentable: Sendable {
+    /// Provides enum constants for presenting inspector views.
+    enum Inspector: Sendable {
+        /// Nothing being inspector
         case none
-        case inspector
+        /// An instance is being inspected.
+        case instance
     }
 
     /// The model container.
@@ -34,11 +36,11 @@ final class VimViewModel {
     /// Boolean indicating if the renderer is active or not.
     var isRendering: Bool = false
     /// Boolean indicating if a presentable should be presented or not.
-    var isPresenting: Bool = false
-    /// The current presentable (most likely being displayed as a `.sheet{...}`).
-    var presentable: Presentable = .none {
+    var isInspecting: Bool = false
+    /// The current inspector (being displayed as a `.sheet{...}` or `.inspector(...)`).
+    var inspector: Inspector = .none {
         didSet {
-            isPresenting.toggle()
+            isInspecting.toggle()
         }
     }
 
@@ -48,6 +50,7 @@ final class VimViewModel {
         switch event {
         case .empty:
             self.id = nil
+            self.isInspecting = false
         case .selected(let id, let selected, _, _):
             self.id = selected ? id : nil
         case .hidden(let hiddenCount):
