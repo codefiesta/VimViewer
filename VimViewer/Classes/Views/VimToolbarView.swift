@@ -31,6 +31,7 @@ struct VimToolbarView: View {
                 roomsButton
                 treeButton
                 xRayButton
+                assistantButton
                 settingsButton
             }
             .padding([.leading, .trailing])
@@ -126,6 +127,25 @@ struct VimToolbarView: View {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "cube.transparent").rotationEffect(Angle(degrees: -45))
                 Text("X-Ray").font(.caption2)
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    var assistantButton: some View {
+        Button(action: {
+
+        }) {
+            VStack(alignment: .center, spacing: 8) {
+                Image(systemName: "apple.intelligence")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(
+                        .angularGradient(
+                            colors: [.red, .yellow, .green, .blue, .purple, .red],
+                            center: .center, startAngle: .zero, endAngle: .degrees(360)
+                        )
+                    )
+                Text("Assistant").font(.caption2)
             }
         }
         .buttonStyle(.plain)

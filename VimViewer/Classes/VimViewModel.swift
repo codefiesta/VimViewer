@@ -53,6 +53,7 @@ final class VimViewModel {
             self.isInspecting = false
         case .selected(let id, let selected, _, _):
             self.id = selected ? id : nil
+            self.isInspecting = selected
         case .hidden(let hiddenCount):
             self.id = nil
             self.hiddenCount = hiddenCount
