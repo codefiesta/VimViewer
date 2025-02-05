@@ -37,6 +37,8 @@ final class VimViewModel {
     var isRendering: Bool = false
     /// Boolean indicating if a presentable should be presented or not.
     var isInspecting: Bool = false
+    /// Boolean indicating if the assistant is enabled or not.
+    var enableAssistant: Bool = false
     /// The current inspector (being displayed as a `.sheet{...}` or `.inspector(...)`).
     var inspector: Inspector = .none {
         didSet {

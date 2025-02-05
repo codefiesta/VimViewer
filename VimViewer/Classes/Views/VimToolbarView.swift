@@ -13,6 +13,9 @@ struct VimToolbarView: View {
 
     @EnvironmentObject
     var vim: Vim
+    
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
 
     @Environment(\.modelContext)
     var modelContext
@@ -134,7 +137,7 @@ struct VimToolbarView: View {
 
     var assistantButton: some View {
         Button(action: {
-
+            viewModel.enableAssistant.toggle()
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "apple.intelligence")

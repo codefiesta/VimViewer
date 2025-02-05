@@ -5,6 +5,7 @@
 //  Created by Kevin McKee
 //
 import SwiftUI
+import VimAssistant
 import VimKit
 
 #if !os(visionOS)
@@ -15,7 +16,7 @@ struct VimRendererView: View {
 
     @Environment(\.viewModel)
     var viewModel: VimViewModel
-
+    
     var body: some View {
         ZStack {
             // The renderer
@@ -67,8 +68,12 @@ struct VimRendererView: View {
 
                 // Column 2
                 VStack {
-                    //AssistantView()
+
+                    // The AI assistant
+                    VimAssistantView(vim: vim, viewModel.enableAssistant)
+
                     Spacer()
+
                     // Toolbar
                     VimToolbarView()
                 }
@@ -76,7 +81,9 @@ struct VimRendererView: View {
 
                 // Column 3
                 HStack {
+
                     Spacer()
+
                     VStack {
                         VimInstanceSummaryView(id: viewModel.id)
                         Spacer()
