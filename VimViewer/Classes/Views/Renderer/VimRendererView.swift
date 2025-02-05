@@ -22,8 +22,6 @@ struct VimRendererView: View {
             RendererContainerView(vim: vim)
             // Geometry loading state
             GeometryStateView(geometry: vim.geometry)
-            // Toolbar
-            VimToolbarView()
             // Info Views
             infoViews
         }
@@ -57,20 +55,34 @@ struct VimRendererView: View {
             HStack {
 
                 // Column 1
-                VStack {
-                    VimHiddenInstancesView()
+                HStack {
+                    VStack {
+                        VimHiddenInstancesView()
+                        Spacer()
+                        VimStatsView()
+                    }
                     Spacer()
-                    VimStatsView()
                 }
+                .frame(minWidth: 0, maxWidth: .infinity)
 
                 // Column 2
-                Spacer()
+                VStack {
+                    //AssistantView()
+                    Spacer()
+                    // Toolbar
+                    VimToolbarView()
+                }
+                .frame(minWidth: 480, maxWidth: .infinity)
 
                 // Column 3
-                VStack {
-                    VimInstanceSummaryView(id: viewModel.id)
+                HStack {
                     Spacer()
+                    VStack {
+                        VimInstanceSummaryView(id: viewModel.id)
+                        Spacer()
+                    }
                 }
+                .frame(minWidth: 0, maxWidth: .infinity)
             }
         }
         .padding()
