@@ -157,7 +157,7 @@ struct VimToolbarView: View {
 
     var settingsButton: some View {
         Button(action: {
-
+            viewModel.sheetFocus = .settings
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "slider.horizontal.3").foregroundColor(.white)

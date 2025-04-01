@@ -99,6 +99,8 @@ struct VimRendererView: View {
                 VimLevelsView()
             case .rooms:
                 VimRoomsView()
+            case .settings:
+                VimSettingsView()
             }
         }
         #if os(macOS)

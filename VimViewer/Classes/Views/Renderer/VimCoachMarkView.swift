@@ -9,27 +9,27 @@ import SwiftUI
 import VimKit
 
 struct VimCoachMarkView: View {
-    
+
     @EnvironmentObject
     var vim: Vim
-    
+
     @Environment(\.viewModel)
     var viewModel: VimViewModel
-    
+
     var hiddenCount: Int {
         viewModel.hiddenCount
     }
-    
+
     /// Determines if the hidden objects row is visible or not
     var isHiddenObjectsRowVisible: Bool {
         viewModel.hiddenCount > .zero
     }
-    
+
     /// Determines if the hidden objects row is visible or not
     var isClipPlanesRowVisible: Bool {
         !vim.camera.clipPlanes.allSatisfy { $0 == .invalid }
     }
-    
+
     /// Determines if the entire view is visible or not
     var isVisible: Bool {
         isHiddenObjectsRowVisible || isClipPlanesRowVisible
@@ -48,7 +48,7 @@ struct VimCoachMarkView: View {
                     }
                     if isClipPlanesRowVisible {
                         GridRow {
-                            Image(systemName: "square.on.square.dashed")
+                            Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")
                             Text("Clip Planes Enabled")
                             removeClipPlanesButton
                         }
@@ -60,7 +60,7 @@ struct VimCoachMarkView: View {
             }
         }
     }
-    
+
     private var unhideAllButton: some View {
         Button {
             Task {
@@ -72,7 +72,7 @@ struct VimCoachMarkView: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private var removeClipPlanesButton: some View {
         Button {
             vim.camera.clipPlanes.invalidate()

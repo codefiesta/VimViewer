@@ -20,7 +20,7 @@ struct VimRoomsView: View {
     @Environment(\.modelContext)
     var modelContext
 
-    @Query(sort: \Database.Room.element?.name)
+    @Query(sort: \Database.Room.number)
     var allRooms: [Database.Room]
 
     /// The in-memory filtered results
@@ -35,21 +35,40 @@ struct VimRoomsView: View {
     var body: some View {
         List {
             ForEach(rooms) { room in
-                Button(action: {
-                    onRoomButtonTap(room: room)
-                }, label: {
+
+                HStack(alignment: .top) {
+                    // 1st column
+                    Text(room.number)
+                        .font(.title2)
+
+                    // 2nd column
                     VStack(alignment: .leading) {
                         Text(room.element?.name ?? .empty)
+                            .font(.title2)
                         HStack {
-                            Text("Area").bold()
-                            Text(room.area.formatted())
-                        }
+                            Text("Area")
+                            Text(room.area.formatted(.default))
+                        }.font(.caption)
+
                         HStack {
-                            Text("Perimeter").bold()
-                            Text(room.perimeter.formatted())
-                        }
+                            Text("Perimeter")
+                            Text(room.perimeter.formatted(.default))
+                        }.font(.caption2)
                     }
-                })
+
+                    Spacer()
+
+                    Button(action: {
+                        onRoomButtonTap(room: room)
+                    }, label: {
+                        VStack(alignment: .center, spacing: 8) {
+                            Image(systemName: "square.arrowtriangle.4.outward")
+                            Text("Section").font(.caption2)
+                        }
+                    })
+                    .buttonStyle(.plain)
+                }
+
             }
         }
         .navigationTitle("Rooms")
@@ -66,7 +85,7 @@ struct VimRoomsView: View {
         let predicate = #Predicate<Database.Node>{ $0.element?.index == index }
         let fetchDescriptor = FetchDescriptor(predicate: predicate)
         guard let node = try? modelContext.fetch(fetchDescriptor).first else { return }
-        
+
         let id = Int(node.index)
         guard let instance = geometry.instance(id: id) else { return }
         let clipPlanes = instance.boundingBox.planes

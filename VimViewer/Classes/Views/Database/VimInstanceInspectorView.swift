@@ -60,13 +60,15 @@ struct VimInstanceInspectorView: View {
 
         VStack(spacing: 4) {
 
-            VimElementView(element: element)
-
             HStack(alignment: .bottom, spacing: 16) {
                 inspectButton
                 hideButton
                 hideSimilarButton
+                sectionButton
             }
+
+            VimElementView(element: element)
+
 
             VStack {
                 Picker(.empty, selection: $propertyScope) {
@@ -131,6 +133,18 @@ struct VimInstanceInspectorView: View {
         .buttonStyle(.plain)
     }
 
+    var sectionButton: some View {
+        Button {
+            applySectionBox()
+        } label: {
+            VStack(alignment: .center, spacing: 8) {
+                Image(systemName: "square.arrowtriangle.4.outward")
+                Text("Section").font(.caption2)
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
     /// Loads the selected instance element data from the database.
     private func load() {
         let index = Int64(id)
@@ -157,6 +171,13 @@ struct VimInstanceInspectorView: View {
         }
     }
 
+    /// Applies a section box to this instance.
+    private func applySectionBox() {
+        guard let geometry = vim.geometry, let instance = geometry.instance(id: id) else { return }
+        let clipPlanes = instance.boundingBox.planes
+        _ = geometry.select(id: id)
+        vim.camera.clipPlanes = clipPlanes
+    }
 }
 
 #Preview {
