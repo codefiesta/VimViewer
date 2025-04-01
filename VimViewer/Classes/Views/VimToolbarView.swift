@@ -14,6 +14,9 @@ struct VimToolbarView: View {
     @EnvironmentObject
     var vim: Vim
 
+    @Environment(\.viewModel)
+    var viewModel: VimViewModel
+
     @Environment(\.modelContext)
     var modelContext
 
@@ -31,6 +34,7 @@ struct VimToolbarView: View {
                 roomsButton
                 treeButton
                 xRayButton
+                assistantButton
                 settingsButton
             }
             .padding([.leading, .trailing])
@@ -63,7 +67,7 @@ struct VimToolbarView: View {
 
     var viewsButton: some View {
         Button(action: {
-
+            viewModel.sheetFocus = .views
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "location.viewfinder")
@@ -75,7 +79,7 @@ struct VimToolbarView: View {
 
     var levelsButton: some View {
         Button(action: {
-
+            viewModel.sheetFocus = .levels
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "square.2.layers.3d")
@@ -87,6 +91,7 @@ struct VimToolbarView: View {
 
     var roomsButton: some View {
         Button(action: {
+            viewModel.sheetFocus = .rooms
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "square.split.bottomrightquarter")
@@ -131,9 +136,28 @@ struct VimToolbarView: View {
         .buttonStyle(.plain)
     }
 
+    var assistantButton: some View {
+        Button(action: {
+            viewModel.enableAssistant.toggle()
+        }) {
+            VStack(alignment: .center, spacing: 8) {
+                Image(systemName: "apple.intelligence")
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(
+                        .angularGradient(
+                            colors: [.red, .yellow, .green, .blue, .purple, .red],
+                            center: .center, startAngle: .zero, endAngle: .degrees(360)
+                        )
+                    )
+                Text("Assistant").font(.caption2)
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
     var settingsButton: some View {
         Button(action: {
-
+            viewModel.sheetFocus = .settings
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "slider.horizontal.3").foregroundColor(.white)

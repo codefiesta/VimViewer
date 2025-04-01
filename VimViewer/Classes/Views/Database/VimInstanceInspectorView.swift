@@ -1,5 +1,5 @@
 //
-//  VimInstanceSummaryView.swift
+//  VimInstanceInspectorView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -9,7 +9,23 @@ import SwiftData
 import SwiftUI
 import VimKit
 
-struct VimInstanceSummaryView: View {
+enum PropertySelectionScope: Int, Identifiable, CaseIterable {
+
+    var id: Int { return rawValue }
+
+    case instance, type
+
+    var displayName: String {
+        switch self {
+        case .instance:
+            return "Instance Properties"
+        case .type:
+            return "Type Properties"
+        }
+    }
+}
+
+struct VimInstanceInspectorView: View {
 
     @EnvironmentObject
     var vim: Vim
@@ -20,53 +36,65 @@ struct VimInstanceSummaryView: View {
     @Environment(\.modelContext)
     var modelContext
 
+    @State
+    var propertyScope: PropertySelectionScope = .instance
+
     /// The database element associated with the currently selected instance id.
     @State
     var element: Database.Element?
 
-    /// Determines if the summary view is visible or not.
-    var isVisible: Bool {
-        viewModel.id != nil
+    @State
+    var isDisclosed: Bool = false
+
+    /// The instance id.
+    var id: Int
+
+    /// Common Initializer
+    /// - Parameter id: the instance id
+    init?(id: Int?) {
+        guard let id else { return nil }
+        self.id = id
     }
 
     var body: some View {
-        ZStack {
-            if isVisible {
-                VStack {
-                    Text("\(element?.name ?? .empty) [\(element?.elementId.formatted(.plain) ?? .empty)]")
-                        .bold()
-                        .padding()
-                    HStack {
-                        Text("Category").font(.caption2).bold()
-                        Text(element?.category?.name ?? .empty).font(.caption2)
-                    }.padding([.bottom], 4)
 
-                    HStack {
-                        Text("Family").font(.caption2).bold()
-                        Text(element?.familyName ?? .empty).font(.caption2)
-                    }
-                    .padding([.bottom], 8)
+        VStack(spacing: 4) {
 
-                    HStack(alignment: .bottom, spacing: 16) {
-                        hideButton
-                        hideSimilarButton
-                        inspectButton
-                    }
-                }
-                .padding([.leading, .trailing, .bottom])
-                .padding([.top], 4)
-                .background(Color.black.opacity(0.65))
-                .cornerRadius(8)
-                .onAppear {
-                    load()
-                }
+            HStack(alignment: .bottom, spacing: 16) {
+                inspectButton
+                hideButton
+                hideSimilarButton
+                sectionButton
             }
+
+            VimElementView(element: element)
+
+
+            VStack {
+                Picker(.empty, selection: $propertyScope) {
+                    ForEach(PropertySelectionScope.allCases, id: \.self) { scope in
+                        Text(scope.displayName)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+
+                VimElementParametersView(scope: propertyScope, element: element)
+
+            }
+            .frame(height: isDisclosed ? nil : 0, alignment: .top)
+            .clipped()
+        }
+        .padding()
+        .background(Color.black.opacity(0.65))
+        .cornerRadius(8)
+        .onAppear {
+            load()
         }
     }
 
     var hideButton: some View {
         Button {
-            guard let id = viewModel.id else { return }
             Task {
                 await vim.hide(ids: [id])
             }
@@ -93,7 +121,9 @@ struct VimInstanceSummaryView: View {
 
     var inspectButton: some View {
         Button {
-            viewModel.presentable = .inspector
+            withAnimation {
+                isDisclosed.toggle()
+            }
         } label: {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "info.circle")
@@ -103,9 +133,20 @@ struct VimInstanceSummaryView: View {
         .buttonStyle(.plain)
     }
 
+    var sectionButton: some View {
+        Button {
+            applySectionBox()
+        } label: {
+            VStack(alignment: .center, spacing: 8) {
+                Image(systemName: "square.arrowtriangle.4.outward")
+                Text("Section").font(.caption2)
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
     /// Loads the selected instance element data from the database.
     private func load() {
-        guard let id = viewModel.id else { return }
         let index = Int64(id)
         let predicate = #Predicate<Database.Node>{ $0.index == index }
         var fetchDescriptor = FetchDescriptor<Database.Node>(predicate: predicate)
@@ -130,11 +171,19 @@ struct VimInstanceSummaryView: View {
         }
     }
 
+    /// Applies a section box to this instance.
+    private func applySectionBox() {
+        guard let geometry = vim.geometry, let instance = geometry.instance(id: id) else { return }
+        // Deselect the instance
+        _ = geometry.select(id: id)
+        // Zoom to the box extents and add clip planes around it
+        vim.camera.zoom(to: instance.boundingBox, clip: true)
+    }
 }
 
 #Preview {
     let vim: Vim = .init()
-    VimInstanceSummaryView()
+    VimInstanceInspectorView(id: 0)
         .environmentObject(vim)
         .environment(VimViewModel())
 }

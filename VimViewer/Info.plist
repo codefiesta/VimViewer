@@ -13,5 +13,9 @@
 	<string>Allow the app to track hand gestures for 3D model interaction.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Allow the app to communicate with data services.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Audio is recorded to transcribe AI assistant requests. Audio recordings are discarded after transcription.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech recognition is used to transcribe AI assistant requests.</string>
 </dict>
 </plist>

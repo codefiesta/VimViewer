@@ -22,23 +22,21 @@ struct VimRendererView: View {
             RendererContainerView(vim: vim)
             // Geometry loading state
             GeometryStateView(geometry: vim.geometry)
-            // Toolbar
-            VimToolbarView()
             // Info Views
             infoViews
         }
         .onReceive(vim.events) { event in
             handleEvent(event)
         }
-        .sheet(isPresented: .constant(viewModel.isPresenting), onDismiss: onSheetDismiss) {
+        .sheet(isPresented: .constant(viewModel.isSheetPresenting), onDismiss: onSheetDismiss) {
             NavigationStack {
                 sheetView
-                    .toolbar {
-                        sheetToolbar
-                    }
             }
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
+            .toolbar {
+                sheetToolbar
+            }
         }
         .modelContainer(optional: vim.db?.modelContainer)
     }
@@ -49,50 +47,78 @@ struct VimRendererView: View {
             HStack {
 
                 // Column 1
-                VStack {
-                    VimHiddenInstancesView()
+                HStack {
+                    VStack {
+                        VimCoachMarkView()
+                        Spacer()
+                        VimStatsView()
+                    }
                     Spacer()
-                    VimStatsView()
                 }
+                .frame(minWidth: 0, maxWidth: .infinity)
 
                 // Column 2
-                Spacer()
+                VStack {
+
+                    // AI assistant (placeholder)
+
+                    Spacer()
+
+                    // Toolbar
+                    VimToolbarView()
+                }
+                .frame(minWidth: 480, maxWidth: .infinity)
 
                 // Column 3
-                VStack {
-                    VimInstanceSummaryView()
+                HStack {
+
                     Spacer()
+
+                    VStack {
+                        VimInstanceInspectorView(id: viewModel.id)
+                        Spacer()
+                    }
                 }
+                .frame(minWidth: 0, maxWidth: .infinity)
             }
         }
         .padding()
     }
 
-    /// Builds the sheet view based on the current presentable.
+    /// Builds the sheet view based on the current inspectable.
     private var sheetView: some View {
         ZStack {
-            switch viewModel.presentable {
+            switch viewModel.sheetFocus {
             case .none:
                 EmptyView()
-            case .inspector:
-                VimInstanceInspectorView()
+            case .views:
+                VimViewsView()
+            case .levels:
+                VimLevelsView()
+            case .rooms:
+                VimRoomsView()
+            case .settings:
+                VimSettingsView()
             }
         }
+        #if os(macOS)
+        .frame(minHeight: 400)
+        #endif
     }
 
     /// Builds the sheet toolbar items.
     private var sheetToolbar: some View {
         Button {
-            viewModel.presentable = .none
+            viewModel.sheetFocus = .none
         } label: {
             Image(systemName: "xmark")
         }
     }
 
-    /// Handles any sheet dismiss cleanup items.
+    /// Handles any dismiss cleanup items.
     private func onSheetDismiss() {
         // Toggle the instance selection
-        if let id = viewModel.self.id {
+        if let id = viewModel.id {
             vim.select(id: id)
         }
     }

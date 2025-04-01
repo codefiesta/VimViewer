@@ -9,7 +9,7 @@ import SwiftUI
 import VimKit
 
 struct VimCameraDebugView: View {
-    
+
     @ObservedObject
     var camera: Vim.Camera
 

@@ -15,10 +15,18 @@ final class VimViewModel {
     /// Shared application view model.
     static let shared: VimViewModel = .init()
 
-    /// Provides enum constants for view model presentables.
-    enum Presentable: Sendable {
+    /// Provides enum constants for presenting focused sheet views.
+    enum Focus: Sendable {
+        /// Nothing being presented
         case none
-        case inspector
+        /// Viewpoints are being presented.
+        case views
+        /// Levels are being presented.
+        case levels
+        /// Rooms are being presented.
+        case rooms
+        /// Settings are being presented.
+        case settings
     }
 
     /// The model container.
@@ -33,12 +41,14 @@ final class VimViewModel {
     var hiddenCount: Int = 0
     /// Boolean indicating if the renderer is active or not.
     var isRendering: Bool = false
-    /// Boolean indicating if a presentable should be presented or not.
-    var isPresenting: Bool = false
-    /// The current presentable (most likely being displayed as a `.sheet{...}`).
-    var presentable: Presentable = .none {
+    /// Boolean indicating if a focus sheet should be presented or not.
+    var isSheetPresenting: Bool = false
+    /// Boolean indicating if the assistant is enabled or not.
+    var enableAssistant: Bool = false
+    /// The current sheet focus (being displayed as a `.sheet{...}`).
+    var sheetFocus: Focus = .none {
         didSet {
-            isPresenting.toggle()
+            isSheetPresenting.toggle()
         }
     }
 
@@ -48,6 +58,7 @@ final class VimViewModel {
         switch event {
         case .empty:
             self.id = nil
+            self.isSheetPresenting = false
         case .selected(let id, let selected, _, _):
             self.id = selected ? id : nil
         case .hidden(let hiddenCount):
