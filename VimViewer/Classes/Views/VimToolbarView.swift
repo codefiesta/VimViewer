@@ -13,7 +13,7 @@ struct VimToolbarView: View {
 
     @EnvironmentObject
     var vim: Vim
-    
+
     @Environment(\.viewModel)
     var viewModel: VimViewModel
 
@@ -67,7 +67,7 @@ struct VimToolbarView: View {
 
     var viewsButton: some View {
         Button(action: {
-
+            viewModel.sheetFocus = .views
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "location.viewfinder")

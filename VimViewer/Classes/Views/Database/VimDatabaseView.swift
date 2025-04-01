@@ -18,7 +18,6 @@ struct VimDatabaseView: View {
         self.db = db
     }
 
-
     var body: some View {
         Text("\(db.state)")
     }

@@ -16,7 +16,7 @@ struct VimRendererView: View {
 
     @Environment(\.viewModel)
     var viewModel: VimViewModel
-    
+
     var body: some View {
         ZStack {
             // The renderer
@@ -29,24 +29,16 @@ struct VimRendererView: View {
         .onReceive(vim.events) { event in
             handleEvent(event)
         }
-        #if os(iOS)
-        .sheet(isPresented: .constant(viewModel.isInspecting), onDismiss: onSheetDismiss) {
+        .sheet(isPresented: .constant(viewModel.isSheetPresenting), onDismiss: onSheetDismiss) {
             NavigationStack {
-                inspectorView
-                    .toolbar {
-                        sheetToolbar
-                    }
+                sheetView
             }
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
-        }
-        #elseif os(macOS)
-        .inspector(isPresented: .constant(viewModel.isInspecting)) {
-            NavigationStack {
-                inspectorView
+            .toolbar {
+                sheetToolbar
             }
         }
-        #endif
         .modelContainer(optional: vim.db?.modelContainer)
     }
 
@@ -85,7 +77,7 @@ struct VimRendererView: View {
                     Spacer()
 
                     VStack {
-                        VimInstanceSummaryView(id: viewModel.id)
+                        VimInstanceInspectorView(id: viewModel.id)
                         Spacer()
                     }
                 }
@@ -95,29 +87,32 @@ struct VimRendererView: View {
         .padding()
     }
 
-    /// Builds the inspector view based on the current inspectable.
-    private var inspectorView: some View {
+    /// Builds the sheet view based on the current inspectable.
+    private var sheetView: some View {
         ZStack {
-            switch viewModel.inspector {
+            switch viewModel.sheetFocus {
             case .none:
                 EmptyView()
-            case .instance:
-                VimInstanceInspectorView(id: viewModel.id)
+            case .views:
+                VimViewsView()
             }
         }
+        #if os(macOS)
+        .frame(minHeight: 400)
+        #endif
     }
 
     /// Builds the sheet toolbar items.
     private var sheetToolbar: some View {
         Button {
-            viewModel.inspector = .none
+            viewModel.sheetFocus = .none
         } label: {
             Image(systemName: "xmark")
         }
     }
 
     /// Handles any dismiss cleanup items.
-    private func onInspectorDismiss() {
+    private func onSheetDismiss() {
         // Toggle the instance selection
         if let id = viewModel.id {
             vim.select(id: id)

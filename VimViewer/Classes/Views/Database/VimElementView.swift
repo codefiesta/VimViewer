@@ -12,34 +12,32 @@ struct VimElementView: View {
 
     var element: Database.Element
 
+    init?(element: Database.Element?) {
+        guard let element else { return nil }
+        self.element = element
+    }
+
     var body: some View {
 
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text("Workset").bold()
-                Text(element.workset?.name ?? .empty)
+                Text("\(element.name ?? .empty) [\(element.elementId.formatted(.plain))]")
             }
-            HStack {
-                Text("Category").bold()
+            .font(.headline)
+            HStack(spacing: 2) {
+                Text("Category:").bold()
                 Text(element.category?.name ?? .empty)
             }
-            HStack {
-                Text("Family Name").bold()
+            HStack(spacing: 2) {
+                Text("Family:").bold()
                 Text(element.familyName ?? .empty)
             }
-            HStack {
-                Text("Family Type").bold()
-                Text(element.familyName ?? .empty)
-            }
-            HStack {
-                Text("Element ID").bold()
-                Text(element.elementId.formatted(.plain))
-            }
-            HStack {
-                Text("Unique ID").bold()
+            HStack(spacing: 2) {
+                Text("ID:").bold()
                 Text(element.uniqueId ?? .empty)
             }
         }
+        .font(.caption)
         #if !os(macOS)
         .navigationTitle(Text("\(element.name ?? .empty) [\(element.elementId.formatted(.plain))]"))
         #endif

@@ -1,5 +1,5 @@
 //
-//  VimInstanceSummaryView.swift
+//  VimInstanceInspectorView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -9,7 +9,23 @@ import SwiftData
 import SwiftUI
 import VimKit
 
-struct VimInstanceSummaryView: View {
+enum PropertySelectionScope: Int, Identifiable, CaseIterable {
+
+    var id: Int { return rawValue }
+
+    case instance, type
+
+    var displayName: String {
+        switch self {
+        case .instance:
+            return "Instance Properties"
+        case .type:
+            return "Type Properties"
+        }
+    }
+}
+
+struct VimInstanceInspectorView: View {
 
     @EnvironmentObject
     var vim: Vim
@@ -20,9 +36,15 @@ struct VimInstanceSummaryView: View {
     @Environment(\.modelContext)
     var modelContext
 
+    @State
+    var propertyScope: PropertySelectionScope = .instance
+
     /// The database element associated with the currently selected instance id.
     @State
     var element: Database.Element?
+
+    @State
+    var isDisclosed: Bool = false
 
     /// The instance id.
     var id: Int
@@ -35,35 +57,37 @@ struct VimInstanceSummaryView: View {
     }
 
     var body: some View {
-        ZStack {
+
+        VStack(spacing: 4) {
+
+            VimElementView(element: element)
+
+            HStack(alignment: .bottom, spacing: 16) {
+                inspectButton
+                hideButton
+                hideSimilarButton
+            }
+
             VStack {
-                Text("\(element?.name ?? .empty) [\(element?.elementId.formatted(.plain) ?? .empty)]")
-                    .bold()
-                    .padding()
-                HStack {
-                    Text("Category").font(.caption2).bold()
-                    Text(element?.category?.name ?? .empty).font(.caption2)
-                }.padding([.bottom], 4)
-
-                HStack {
-                    Text("Family").font(.caption2).bold()
-                    Text(element?.familyName ?? .empty).font(.caption2)
+                Picker(.empty, selection: $propertyScope) {
+                    ForEach(PropertySelectionScope.allCases, id: \.self) { scope in
+                        Text(scope.displayName)
+                    }
                 }
-                .padding([.bottom], 8)
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
 
-                HStack(alignment: .bottom, spacing: 16) {
-                    hideButton
-                    hideSimilarButton
-                    inspectButton
-                }
+                VimElementParametersView(scope: propertyScope, element: element)
+
             }
-            .padding([.leading, .trailing, .bottom])
-            .padding([.top], 4)
-            .background(Color.black.opacity(0.65))
-            .cornerRadius(8)
-            .onAppear {
-                load()
-            }
+            .frame(height: isDisclosed ? nil : 0, alignment: .top)
+            .clipped()
+        }
+        .padding()
+        .background(Color.black.opacity(0.65))
+        .cornerRadius(8)
+        .onAppear {
+            load()
         }
     }
 
@@ -95,7 +119,9 @@ struct VimInstanceSummaryView: View {
 
     var inspectButton: some View {
         Button {
-            viewModel.inspector = .instance
+            withAnimation {
+                isDisclosed.toggle()
+            }
         } label: {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "info.circle")
@@ -135,7 +161,7 @@ struct VimInstanceSummaryView: View {
 
 #Preview {
     let vim: Vim = .init()
-    VimInstanceSummaryView(id: 0)
+    VimInstanceInspectorView(id: 0)
         .environmentObject(vim)
         .environment(VimViewModel())
 }

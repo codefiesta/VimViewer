@@ -15,12 +15,12 @@ final class VimViewModel {
     /// Shared application view model.
     static let shared: VimViewModel = .init()
 
-    /// Provides enum constants for presenting inspector views.
-    enum Inspector: Sendable {
-        /// Nothing being inspector
+    /// Provides enum constants for presenting focused sheet views.
+    enum Focus: Sendable {
+        /// Nothing being presented
         case none
-        /// An instance is being inspected.
-        case instance
+        /// Viewpoints are being presented.
+        case views
     }
 
     /// The model container.
@@ -35,14 +35,14 @@ final class VimViewModel {
     var hiddenCount: Int = 0
     /// Boolean indicating if the renderer is active or not.
     var isRendering: Bool = false
-    /// Boolean indicating if a presentable should be presented or not.
-    var isInspecting: Bool = false
+    /// Boolean indicating if a focus sheet should be presented or not.
+    var isSheetPresenting: Bool = false
     /// Boolean indicating if the assistant is enabled or not.
     var enableAssistant: Bool = false
-    /// The current inspector (being displayed as a `.sheet{...}` or `.inspector(...)`).
-    var inspector: Inspector = .none {
+    /// The current sheet focus (being displayed as a `.sheet{...}`).
+    var sheetFocus: Focus = .none {
         didSet {
-            isInspecting.toggle()
+            isSheetPresenting.toggle()
         }
     }
 
@@ -52,10 +52,9 @@ final class VimViewModel {
         switch event {
         case .empty:
             self.id = nil
-            self.isInspecting = false
-        case .selected(let id, let selected, _, _):
+            self.isSheetPresenting = false
+        case .selected(let id, let selected, let location, _):
             self.id = selected ? id : nil
-            self.isInspecting = selected
         case .hidden(let hiddenCount):
             self.id = nil
             self.hiddenCount = hiddenCount
