@@ -53,7 +53,7 @@ final class VimViewModel {
         case .empty:
             self.id = nil
             self.isSheetPresenting = false
-        case .selected(let id, let selected, let location, _):
+        case .selected(let id, let selected, _, _):
             self.id = selected ? id : nil
         case .hidden(let hiddenCount):
             self.id = nil
