@@ -1,5 +1,5 @@
 //
-//  VimHiddenElementsView.swift
+//  VimCoachMarkView.swift
 //  VimViewer
 //
 //  Created by Kevin McKee
@@ -8,7 +8,7 @@
 import SwiftUI
 import VimKit
 
-struct VimHiddenInstancesView: View {
+struct VimCoachMarkView: View {
     
     @EnvironmentObject
     var vim: Vim
@@ -27,7 +27,7 @@ struct VimHiddenInstancesView: View {
     
     /// Determines if the hidden objects row is visible or not
     var isClipPlanesRowVisible: Bool {
-        vim.camera.clipPlanes.allSatisfy { $0 != .invalid }
+        !vim.camera.clipPlanes.allSatisfy { $0 == .invalid }
     }
     
     /// Determines if the entire view is visible or not
@@ -90,7 +90,7 @@ struct VimHiddenInstancesView: View {
     let viewModel: VimViewModel = .init()
     viewModel.hiddenCount = 10
 
-    return VimHiddenInstancesView()
+    return VimCoachMarkView()
         .environmentObject(vim)
         .environment(viewModel)
 }

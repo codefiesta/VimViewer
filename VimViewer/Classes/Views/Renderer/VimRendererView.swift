@@ -50,7 +50,7 @@ struct VimRendererView: View {
                 // Column 1
                 HStack {
                     VStack {
-                        VimHiddenInstancesView()
+                        VimCoachMarkView()
                         Spacer()
                         VimStatsView()
                     }
