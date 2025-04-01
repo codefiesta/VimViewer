@@ -177,7 +177,7 @@ struct VimInstanceInspectorView: View {
         // Deselect the instance
         _ = geometry.select(id: id)
         // Zoom to the box extents and add clip planes around it
-        vim.camera.frame(box: instance.boundingBox, clip: true)
+        vim.camera.zoom(to: instance.boundingBox, clip: true)
     }
 }
 
