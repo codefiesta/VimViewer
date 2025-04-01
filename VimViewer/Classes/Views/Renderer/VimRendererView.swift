@@ -95,6 +95,10 @@ struct VimRendererView: View {
                 EmptyView()
             case .views:
                 VimViewsView()
+            case .levels:
+                VimLevelsView()
+            case .rooms:
+                VimRoomsView()
             }
         }
         #if os(macOS)

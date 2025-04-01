@@ -79,7 +79,7 @@ struct VimToolbarView: View {
 
     var levelsButton: some View {
         Button(action: {
-
+            viewModel.sheetFocus = .levels
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "square.2.layers.3d")
@@ -91,6 +91,7 @@ struct VimToolbarView: View {
 
     var roomsButton: some View {
         Button(action: {
+            viewModel.sheetFocus = .rooms
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "square.split.bottomrightquarter")

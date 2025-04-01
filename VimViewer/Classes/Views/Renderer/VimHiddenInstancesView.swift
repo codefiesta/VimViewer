@@ -9,29 +9,50 @@ import SwiftUI
 import VimKit
 
 struct VimHiddenInstancesView: View {
-
+    
     @EnvironmentObject
     var vim: Vim
-
+    
     @Environment(\.viewModel)
     var viewModel: VimViewModel
-
+    
     var hiddenCount: Int {
         viewModel.hiddenCount
     }
-
-    /// Determines if the view is visible or not
-    var isVisible: Bool {
+    
+    /// Determines if the hidden objects row is visible or not
+    var isHiddenObjectsRowVisible: Bool {
         viewModel.hiddenCount > .zero
+    }
+    
+    /// Determines if the hidden objects row is visible or not
+    var isClipPlanesRowVisible: Bool {
+        vim.camera.clipPlanes.allSatisfy { $0 != .invalid }
+    }
+    
+    /// Determines if the entire view is visible or not
+    var isVisible: Bool {
+        isHiddenObjectsRowVisible || isClipPlanesRowVisible
     }
 
     var body: some View {
         ZStack {
             if isVisible {
-                HStack {
-                    Text("\(hiddenCount) Hidden Objects")
-                    Divider().overlay(.primary)
-                    unhideButton
+                Grid(verticalSpacing: 8) {
+                    if isHiddenObjectsRowVisible {
+                        GridRow {
+                            Image(systemName: "eye.slash")
+                            Text("\(hiddenCount) Hidden Objects")
+                            unhideAllButton
+                        }
+                    }
+                    if isClipPlanesRowVisible {
+                        GridRow {
+                            Image(systemName: "square.on.square.dashed")
+                            Text("Clip Planes Enabled")
+                            removeClipPlanesButton
+                        }
+                    }
                 }
                 .fixedSize()
                 .padding()
@@ -39,14 +60,25 @@ struct VimHiddenInstancesView: View {
             }
         }
     }
-
-    private var unhideButton: some View {
+    
+    private var unhideAllButton: some View {
         Button {
             Task {
                 await vim.unhide()
             }
         } label: {
-            Text("Unhide")
+            Image(systemName: "trash")
+            //Text("Unhide")
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private var removeClipPlanesButton: some View {
+        Button {
+            vim.camera.clipPlanes.invalidate()
+        } label: {
+            Image(systemName: "trash")
+            //Text("Clear")
         }
         .buttonStyle(.plain)
     }
