@@ -174,9 +174,10 @@ struct VimInstanceInspectorView: View {
     /// Applies a section box to this instance.
     private func applySectionBox() {
         guard let geometry = vim.geometry, let instance = geometry.instance(id: id) else { return }
-        let clipPlanes = instance.boundingBox.planes
+        // Deselect the instance
         _ = geometry.select(id: id)
-        vim.camera.clipPlanes = clipPlanes
+        // Zoom to the box extents and add clip planes around it
+        vim.camera.frame(box: instance.boundingBox, clip: true)
     }
 }
 

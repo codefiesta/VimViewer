@@ -88,8 +88,9 @@ struct VimRoomsView: View {
 
         let id = Int(node.index)
         guard let instance = geometry.instance(id: id) else { return }
-        let clipPlanes = instance.boundingBox.planes
-        vim.camera.clipPlanes = clipPlanes
+        // Zoom to the box extents and add clip planes around it
+        vim.camera.frame(box: instance.boundingBox, clip: true)
+        // Dismiss the sheet
         viewModel.sheetFocus = .none
     }
 }
