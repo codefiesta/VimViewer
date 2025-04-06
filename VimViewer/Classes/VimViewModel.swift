@@ -25,6 +25,8 @@ final class VimViewModel {
         case levels
         /// Rooms are being presented.
         case rooms
+        /// The object tree is being presented.
+        case tree
         /// Settings are being presented.
         case settings
     }

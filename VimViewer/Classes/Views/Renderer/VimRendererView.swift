@@ -97,6 +97,8 @@ struct VimRendererView: View {
                 VimLevelsView()
             case .rooms:
                 VimRoomsView()
+            case .tree:
+                VimTreeView()
             case .settings:
                 VimSettingsView()
             }

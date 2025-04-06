@@ -103,7 +103,7 @@ struct VimToolbarView: View {
 
     var treeButton: some View {
         Button(action: {
-
+            viewModel.sheetFocus = .tree
         }) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: "square.3.layers.3d.down.right")
