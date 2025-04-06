@@ -12,3 +12,16 @@ extension String: @retroactive Identifiable {
         return self
     }
 }
+
+extension Int: @retroactive Identifiable {
+    public var id: Int {
+        return self
+    }
+}
+
+extension Int64: @retroactive Identifiable {
+    public var id: Int64 {
+        return self
+    }
+}
+

@@ -156,7 +156,11 @@ struct VimModelDetailView: View {
     private func loadGeometry() async {
         let loadTask = Task {
             await vim.geometry?.load()
+            if let bounds = vim.geometry?.bounds {
+                vim.camera.zoom(to: bounds)
+            }
         }
+
         // If we are running visionOS, wait until the geometry has loaded
         #if os(visionOS)
         _ = await loadTask.value
