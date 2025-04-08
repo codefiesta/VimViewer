@@ -41,6 +41,8 @@ final class VimViewModel {
     var id: Int?
     /// Holds the current total hidden instances count.
     var hiddenCount: Int = 0
+    /// Holds the current total isolated instances count.
+    var isolatedCount: Int = 0
     /// Boolean indicating if the renderer is active or not.
     var isRendering: Bool = false
     /// Boolean indicating if a focus sheet should be presented or not.
@@ -63,9 +65,11 @@ final class VimViewModel {
             self.isSheetPresenting = false
         case .selected(let id, let selected, _, _):
             self.id = selected ? id : nil
-        case .hidden(let hiddenCount):
+        case .hidden(let count):
             self.id = nil
-            self.hiddenCount = hiddenCount
+            self.hiddenCount = count
+        case .isolated(let count):
+            self.isolatedCount = count
         }
     }
 }

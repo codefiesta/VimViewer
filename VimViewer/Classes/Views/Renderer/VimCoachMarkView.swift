@@ -20,8 +20,17 @@ struct VimCoachMarkView: View {
         viewModel.hiddenCount
     }
 
+    var isolatedCount: Int {
+        viewModel.isolatedCount
+    }
+
     /// Determines if the hidden objects row is visible or not
     var isHiddenObjectsRowVisible: Bool {
+        viewModel.hiddenCount > .zero
+    }
+
+    /// Determines if the isolated objects row is visible or not
+    var isIsolatedObjectsRowVisible: Bool {
         viewModel.hiddenCount > .zero
     }
 
@@ -32,7 +41,9 @@ struct VimCoachMarkView: View {
 
     /// Determines if the entire view is visible or not
     var isVisible: Bool {
-        isHiddenObjectsRowVisible || isClipPlanesRowVisible
+        isHiddenObjectsRowVisible ||
+        isIsolatedObjectsRowVisible ||
+        isClipPlanesRowVisible
     }
 
     var body: some View {
