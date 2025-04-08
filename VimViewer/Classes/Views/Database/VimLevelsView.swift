@@ -54,10 +54,7 @@ struct VimLevelsView: View {
                     Button(action: {
                         onLevelButtonTap(level: level)
                     }, label: {
-                        VStack(alignment: .center, spacing: 8) {
-                            Image(systemName: "square.arrowtriangle.4.outward")
-                            Text("Section").font(.caption2)
-                        }
+                        Image(systemName: "squareshape.squareshape.dotted")
                     })
                     .buttonStyle(.plain)
                 }

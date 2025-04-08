@@ -65,6 +65,7 @@ struct VimInstanceInspectorView: View {
                 hideButton
                 hideSimilarButton
                 sectionButton
+                isolateButton
             }
 
             VimElementView(element: element)
@@ -135,11 +136,23 @@ struct VimInstanceInspectorView: View {
 
     var sectionButton: some View {
         Button {
-            applySectionBox()
+            section()
         } label: {
             VStack(alignment: .center, spacing: 8) {
-                Image(systemName: "square.arrowtriangle.4.outward")
+                Image(systemName: "squareshape.squareshape.dotted")
                 Text("Section").font(.caption2)
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    var isolateButton: some View {
+        Button {
+            isolate()
+        } label: {
+            VStack(alignment: .center, spacing: 8) {
+                Image(systemName: "dot.scope")
+                Text("Isolate").font(.caption2)
             }
         }
         .buttonStyle(.plain)
@@ -171,13 +184,21 @@ struct VimInstanceInspectorView: View {
         }
     }
 
-    /// Applies a section box to this instance.
-    private func applySectionBox() {
+    /// Applies a section box around this instance.
+    private func section() {
         guard let geometry = vim.geometry, let instance = geometry.instance(id: id) else { return }
         // Deselect the instance
         _ = geometry.select(id: id)
         // Zoom to the box extents and add clip planes around it
         vim.camera.zoom(to: instance.boundingBox, clip: true)
+    }
+
+    private func isolate() {
+        guard let geometry = vim.geometry, let instance = geometry.instance(id: id) else { return }
+        vim.camera.zoom(to: instance.boundingBox, clip: false)
+        Task {
+            await vim.isolate(ids: [id])
+        }
     }
 }
 
