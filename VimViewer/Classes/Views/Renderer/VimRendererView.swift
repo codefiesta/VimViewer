@@ -5,6 +5,7 @@
 //  Created by Kevin McKee
 //
 import SwiftUI
+import VimAssistant
 import VimKit
 
 #if !os(visionOS)
@@ -60,7 +61,7 @@ struct VimRendererView: View {
                 // Column 2
                 VStack {
 
-                    // AI assistant (placeholder)
+                    VimAssistantView(vim: vim, viewModel.enableAssistant)
 
                     Spacer()
 
