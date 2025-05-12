@@ -160,8 +160,7 @@ struct VimInstanceInspectorView: View {
 
     /// Loads the selected instance element data from the database.
     private func load() {
-        let index = Int64(id)
-        let predicate = #Predicate<Database.Node>{ $0.index == index }
+        let predicate = Database.Node.predicate(Int64(id))
         var fetchDescriptor = FetchDescriptor<Database.Node>(predicate: predicate)
         fetchDescriptor.fetchLimit = 1
         guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return

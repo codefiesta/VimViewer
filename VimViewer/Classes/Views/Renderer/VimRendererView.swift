@@ -56,7 +56,9 @@ struct VimRendererView: View {
                     }
                     Spacer()
                 }
-                .frame(minWidth: 0, maxWidth: .infinity)
+
+                Spacer()
+//                .frame(minWidth: 0, maxWidth: .infinity)
 
                 // Column 2
                 VStack {
@@ -68,7 +70,9 @@ struct VimRendererView: View {
                     // Toolbar
                     VimToolbarView()
                 }
-                .frame(minWidth: 480, maxWidth: .infinity)
+                .frame(minWidth: 520)
+
+                Spacer()
 
                 // Column 3
                 HStack {
@@ -78,9 +82,11 @@ struct VimRendererView: View {
                     VStack {
                         VimInstanceInspectorView(id: viewModel.id)
                         Spacer()
+                        QuantitiesChart()
+                            .frame(maxHeight: 300)
                     }
                 }
-                .frame(minWidth: 0, maxWidth: .infinity)
+//                .frame(minWidth: 0, maxWidth: .infinity)
             }
         }
         .padding()
