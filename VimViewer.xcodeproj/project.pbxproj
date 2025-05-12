@@ -640,7 +640,7 @@
 			repositoryURL = "https://github.com/codefiesta/VimAssistant";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.2;
+				minimumVersion = 0.0.3;
 			};
 		};
 		CE473B5A2CBA0DCF0045EEFB /* XCRemoteSwiftPackageReference "VimKit" */ = {
@@ -648,7 +648,7 @@
 			repositoryURL = "https://github.com/codefiesta/VimKit";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.7;
+				minimumVersion = 0.4.8;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
