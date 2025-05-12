@@ -54,7 +54,9 @@ struct VimTreeView: View {
         .onChange(of: searchText, { oldValue, newValue in
         })
         .task {
-            await modelTree.load(modelContext: modelContext)
+
+            guard let nodes = vim.db?.nodes else { return }
+            await modelTree.load(modelContext: modelContext, nodes: nodes)
         }
     }
 

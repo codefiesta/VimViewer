@@ -124,7 +124,7 @@ struct VimModelDetailView: View {
 
     private var launchButton: some View {
         Button {
-            Task { @MainActor in
+            Task { //@MainActor in
                 await launchViewer()
             }
         } label: {
@@ -134,31 +134,33 @@ struct VimModelDetailView: View {
     }
 
     /// Launches the model viewer.
-    @MainActor
     private func launchViewer() async {
-        Task {
-            switch vim.geometry?.state {
-            case .some(.unknown), .some(.error(_)):
-                await loadGeometry()
-            case .none, .some(.loading), .some(.indexing), .some(.ready):
-                break
-            }
 
-            #if os(macOS)
-            openWindow(id: .renderer)
-            #else
-            presentRenderer.toggle()
-            #endif
+        guard let geometry = vim.geometry else { return }
+
+        switch geometry.state {
+        case .unknown, .error:
+            await loadGeometry()
+        case .loading, .indexing:
+            break
+        case .ready:
+            break
         }
+
+        #if os(macOS)
+        openWindow(id: .renderer)
+        #else
+        presentRenderer.toggle()
+        #endif
     }
 
     /// Loads the geometry (if needed)
     private func loadGeometry() async {
-        let loadTask = Task {
-            await vim.geometry?.load()
-            if let bounds = vim.geometry?.bounds {
-                vim.camera.zoom(to: bounds)
-            }
+        guard let geometry = vim.geometry else { return }
+        Task {
+            await geometry.load()
+            vim.db?.nodes = geometry.instances.map({ $0.index })
+            vim.camera.zoom(to: geometry.bounds)
         }
 
         // If we are running visionOS, wait until the geometry has loaded

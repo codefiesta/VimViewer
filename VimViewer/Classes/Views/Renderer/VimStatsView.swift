@@ -84,7 +84,8 @@ struct VimStatsView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(.white, lineWidth: 2)
-        )    }
+        )
+    }
 }
 
 #Preview {
