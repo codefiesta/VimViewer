@@ -47,19 +47,13 @@ struct VimModelListView: View {
     private func handleModelSelection() async {
         guard let selection else { return }
         viewModel.descriptor = selection
-        let loadTask = Task {
+        Task {
             // Load the file
             await vim.load(from: selection.url)
             // Update the preview image
             if selection.previewImageName == nil {
                 selection.previewImageName = vim.assets?.previewImageName
             }
-        }
-        // Wait for the file to be loaded
-        await _ = loadTask.value
-        Task {
-            // Start the db import process
-            await vim.db?.import()
         }
     }
 }

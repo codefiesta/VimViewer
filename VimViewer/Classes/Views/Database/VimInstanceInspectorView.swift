@@ -172,12 +172,8 @@ struct VimInstanceInspectorView: View {
     /// The logic is to hide all instances that are in the same family.
     private func hideSimilar() {
         guard let element, let familyName = element.familyName else { return }
-
-        let predicate = #Predicate<Database.Node>{ $0.element?.familyName == familyName }
-        let fetchDescriptor = FetchDescriptor<Database.Node>(predicate: predicate)
-        guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return
-        }
-        let ids = results.compactMap{ Int($0.index) }
+        guard let tree = vim.tree else { return }
+        guard let ids = tree.root.child(familyName)?.ids else { return }
         Task {
             await vim.hide(ids: ids)
         }

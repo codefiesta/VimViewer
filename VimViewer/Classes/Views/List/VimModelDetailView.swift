@@ -159,14 +159,7 @@ struct VimModelDetailView: View {
         guard let geometry = vim.geometry else { return }
         Task {
             await geometry.load()
-            vim.db?.nodes = geometry.instances.map({ $0.index })
-            vim.camera.zoom(to: geometry.bounds)
         }
-
-        // If we are running visionOS, wait until the geometry has loaded
-        #if os(visionOS)
-        _ = await loadTask.value
-        #endif
     }
 }
 
