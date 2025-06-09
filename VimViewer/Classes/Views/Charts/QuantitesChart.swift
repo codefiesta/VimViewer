@@ -10,6 +10,14 @@ import SwiftData
 import SwiftUI
 import VimKit
 
+struct DataSlice: Equatable {
+    let name: String
+    let ids: Set<Int>
+    var count: Int {
+        ids.count
+    }
+}
+
 struct QuantitiesChart: View {
 
     @EnvironmentObject
@@ -19,23 +27,23 @@ struct QuantitiesChart: View {
     var modelContext
 
     @State
-    var data: [Vim.Tree.Node] = []
+    var data: [DataSlice] = []
 
     @State
     var selectedAngle: Int? = nil
 
     @State
-    var selected: Vim.Tree.Node? = nil
+    var selected: DataSlice? = nil
 
     /// Returns a total count of all data slices.
     var total: Int {
-        data.reduce(0) { $0 + $1.ids.count }
+        data.reduce(0) { $0 + $1.count }
     }
 
     /// Returns a percentage of the selected data slice.
     var percentage: Float {
         guard let selected else { return .zero }
-        return Float(selected.ids.count) / Float(total)
+        return Float(selected.count) / Float(total)
     }
 
     var body: some View {
@@ -75,7 +83,7 @@ struct QuantitiesChart: View {
             )
             .cornerRadius(5.0)
             .foregroundStyle(by: .value("Name", element.name))
-            .opacity(element.name == selected?.name ? 1 : 0.3)
+            .opacity(element.name == selected?.name ? 1 : 0.5)
         }
         .chartAngleSelection(value: $selectedAngle)
         .scaledToFit()
@@ -114,14 +122,14 @@ struct QuantitiesChart: View {
     /// Finds the selected data slice at the specified angle
     /// - Parameter angle: the angle of the data slice
     /// - Returns: the selected data slice
-    private func findSelected(_ angle: Int?) -> Vim.Tree.Node? {
+    private func findSelected(_ angle: Int?) -> DataSlice? {
 
         guard let angle else { return nil }
 
         var accumulatedCount = 0
 
         let slice = data.first { slice in
-            accumulatedCount += slice.ids.count
+            accumulatedCount += slice.count
             return angle <= accumulatedCount
         }
         return slice
@@ -141,14 +149,20 @@ struct QuantitiesChart: View {
 
     /// Loads the top level categories as the array of data slices.
     private func loadData() async {
-        guard let tree = vim.tree, let children = tree.root.children else { return }
         // Fetch the top level categories from the node tree
-        data = children
+        guard let tree = vim.tree, let children = tree.root.children else { return }
+        data = children.map { node in
+            DataSlice(name: node.name, ids: node.ids)
+        }
     }
 }
 
 #Preview {
     let vim: Vim = .init()
-    let data = [Vim.Tree.Node]()
+    let data = [
+        DataSlice(name: "Doors", ids: [1,2,3]),
+        DataSlice(name: "Walls", ids: [4,5]),
+        DataSlice(name: "Windows", ids: [6,7,8,9,10]),
+    ]
     QuantitiesChart(data: data).environmentObject(vim)
 }
