@@ -22,7 +22,7 @@ struct VimElementParametersView: View {
 
     @State
     var instanceParameters: [String: [Database.Parameter]] = [:]
-    
+
     @State
     var typeParameters: [String: [Database.Parameter]] = [:]
 
@@ -40,7 +40,7 @@ struct VimElementParametersView: View {
             typeParameters
         }
     }
-    
+
     var keys: [String] {
         groups.keys.sorted { $0 > $1 }
     }
@@ -83,14 +83,14 @@ struct VimElementParametersView: View {
             fetch()
         }
     }
-    
+
     /// Fetches all data for the view.
     private func fetch() {
         fetchInstanceParameters()
         fetchTypeParameters()
         fetchMaterial()
     }
-    
+
     /// Fetches the instance parameters.
     private func fetchInstanceParameters() {
         let index = element.index
@@ -99,7 +99,7 @@ struct VimElementParametersView: View {
         }
         let fetchDescriptor = FetchDescriptor<Database.Parameter>(predicate: predicate)
         guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return }
-                
+
         var groups = [String: [Database.Parameter]]()
         for parameter in results {
             guard let descriptor = parameter.descriptor else { continue }
@@ -111,7 +111,7 @@ struct VimElementParametersView: View {
         }
         instanceParameters = groups
     }
-    
+
     /// Fetches the instance type parameters.
     private func fetchTypeParameters() {
         guard let instanceType = element.instanceType else { return }
@@ -121,7 +121,7 @@ struct VimElementParametersView: View {
         }
         let fetchDescriptor = FetchDescriptor<Database.Parameter>(predicate: predicate)
         guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return }
-        
+
         var groups = [String: [Database.Parameter]]()
         for parameter in results {
             guard let descriptor = parameter.descriptor else { continue }
@@ -133,7 +133,7 @@ struct VimElementParametersView: View {
         }
         typeParameters = groups
     }
-    
+
     /// Fetches the element material
     private func fetchMaterial() {
         let index = element.index

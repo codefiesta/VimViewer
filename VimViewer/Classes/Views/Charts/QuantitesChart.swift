@@ -160,9 +160,9 @@ struct QuantitiesChart: View {
 #Preview {
     let vim: Vim = .init()
     let data = [
-        DataSlice(name: "Doors", ids: [1,2,3]),
-        DataSlice(name: "Walls", ids: [4,5]),
-        DataSlice(name: "Windows", ids: [6,7,8,9,10]),
+        DataSlice(name: "Doors", ids: [1, 2, 3]),
+        DataSlice(name: "Walls", ids: [4, 5]),
+        DataSlice(name: "Windows", ids: [6, 7, 8, 9, 10]),
     ]
     QuantitiesChart(data: data).environmentObject(vim)
 }
