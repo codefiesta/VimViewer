@@ -21,23 +21,28 @@ struct VimElementParametersView: View {
     var modelContext
 
     @State
+    var instanceParameters: [String: [Database.Parameter]] = [:]
+
+    @State
+    var typeParameters: [String: [Database.Parameter]] = [:]
+
+    @State
     var textureFile: String?
 
     var scope: PropertySelectionScope
     var element: Database.Element
 
-    /// Returns the grouped paramaters based on the current scope.
-    var parameters: [String: [Database.Parameter]] {
+    var groups: [String: [Database.Parameter]] {
         switch scope {
         case .instance:
-            element.instanceParameters
+            instanceParameters
         case .type:
-            element.instanceType?.instanceParameters ?? [:]
+            typeParameters
         }
     }
 
     var keys: [String] {
-        parameters.keys.sorted { $0 > $1 }
+        groups.keys.sorted { $0 > $1 }
     }
 
     init?(scope: PropertySelectionScope, element: Database.Element?) {
@@ -62,7 +67,7 @@ struct VimElementParametersView: View {
             // The scoped properties
             ForEach(keys, id: \.self) { key in
                 Section(header: Text(key)) {
-                    ForEach(parameters[key] ?? []) { parameter in
+                    ForEach(groups[key] ?? []) { parameter in
                         HStack {
                             Text(parameter.descriptor?.name ?? .empty).bold()
                             Text(parameter.formattedValue)
@@ -75,13 +80,63 @@ struct VimElementParametersView: View {
             // TODO: Scroll to the top of the list
         }
         .onAppear {
-            fetchMaterial()
+            fetch()
         }
     }
 
-    /// Loads the element material
+    /// Fetches all data for the view.
+    private func fetch() {
+        fetchInstanceParameters()
+        fetchTypeParameters()
+        fetchMaterial()
+    }
+
+    /// Fetches the instance parameters.
+    private func fetchInstanceParameters() {
+        let index = element.index
+        let predicate = #Predicate<Database.Parameter> {
+            return $0.element == index
+        }
+        let fetchDescriptor = FetchDescriptor<Database.Parameter>(predicate: predicate)
+        guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return }
+
+        var groups = [String: [Database.Parameter]]()
+        for parameter in results {
+            guard let descriptor = parameter.descriptor else { continue }
+            if groups[descriptor.group] != nil {
+                groups[descriptor.group]?.append(parameter)
+            } else {
+                groups[descriptor.group] = [parameter]
+            }
+        }
+        instanceParameters = groups
+    }
+
+    /// Fetches the instance type parameters.
+    private func fetchTypeParameters() {
+        guard let instanceType = element.instanceType else { return }
+        let index = instanceType.index
+        let predicate = #Predicate<Database.Parameter> {
+            return $0.element == index
+        }
+        let fetchDescriptor = FetchDescriptor<Database.Parameter>(predicate: predicate)
+        guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return }
+
+        var groups = [String: [Database.Parameter]]()
+        for parameter in results {
+            guard let descriptor = parameter.descriptor else { continue }
+            if groups[descriptor.group] != nil {
+                groups[descriptor.group]?.append(parameter)
+            } else {
+                groups[descriptor.group] = [parameter]
+            }
+        }
+        typeParameters = groups
+    }
+
+    /// Fetches the element material
     private func fetchMaterial() {
-        let index: Int64? = element.index
+        let index = element.index
         let predicate = #Predicate<Database.MaterialInElement>{ $0.element?.index == index }
         let fetchDescriptor = FetchDescriptor<Database.MaterialInElement>(predicate: predicate)
         guard let results = try? modelContext.fetch(fetchDescriptor), results.isNotEmpty else { return }
