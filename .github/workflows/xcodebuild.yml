@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Download MetalToolChain
+      run: sudo xcodebuild -downloadComponent MetalToolchain
     - name: Install SwiftLint
       run: brew install swiftlint
     - name: Lint
